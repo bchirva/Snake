@@ -4,7 +4,7 @@
 Window::Window()
     : m_Window(sf::VideoMode(FIELD_SIZE * 16, (FIELD_SIZE + 1) * 16), "Snake")
 {
-    m_Window.setFramerateLimit(60); 
+    m_Window.setActive(false);
 }
 
 void Window::addDrawable(const std::shared_ptr<IDrawable>& ADrawable)
@@ -14,7 +14,9 @@ void Window::addDrawable(const std::shared_ptr<IDrawable>& ADrawable)
 
 void Window::drawLoop()
 {
+    m_Window.setFramerateLimit(60); 
     m_Window.setActive(true);
+
     while(m_Window.isOpen())
     {
         sf::Event event;
