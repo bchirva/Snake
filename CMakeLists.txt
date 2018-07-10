@@ -10,13 +10,17 @@ add_executable(Snake
 
 set_property(TARGET Snake PROPERTY CXX_STANDARD 14)
 
-target_compile_options(Snake
-    PRIVATE
-        -Werror
-        -Wall
-        -Wextra
-        -Wpedantic
-    )
+if(MSVC)
+    target_compile_options(Snake PRIVATE /W4)
+else()
+    target_compile_options(Snake
+        PRIVATE
+            -Werror
+            -Wall
+            -Wextra
+            -Wpedantic
+        )
+endif()
 
 target_include_directories(Snake 
     PRIVATE
