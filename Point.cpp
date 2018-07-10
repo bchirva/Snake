@@ -33,3 +33,13 @@ bool Point::isHit(const Point& APoint) const
 {
     return (m_X == APoint.m_X && m_Y == APoint.m_Y);
 }
+
+int8_t Point::getX() const
+{
+    return m_X;
+}
+
+int8_t Point::getY() const
+{
+    return m_Y;
+}

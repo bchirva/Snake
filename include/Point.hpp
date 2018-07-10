@@ -18,6 +18,9 @@ public:
     Point& operator=(Point&&) = default;
     Point(int8_t x, int8_t y);
 
+    int8_t getX() const;
+    int8_t getY() const;
+
     void move(EDirection ADirection, int8_t ADistance);
     bool isHit(const Point& APoint) const;
 };

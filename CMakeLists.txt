@@ -6,6 +6,14 @@ find_package(Threads REQUIRED)
 find_package(SFML COMPONENTS system graphics window REQUIRED)
 
 add_executable(Snake 
+    main.cpp
+    Game.cpp
+    Window.cpp
+    Snake.cpp
+    Wall.cpp
+    Line.cpp
+    Apple.cpp
+    Point.cpp
     )
 
 set_property(TARGET Snake PROPERTY CXX_STANDARD 14)
