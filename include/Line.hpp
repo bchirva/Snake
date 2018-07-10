@@ -4,23 +4,21 @@
 #include <list>
 #include "Point.hpp"
 
-namespace Snake
+class Line
 {
-    class Line
-    {
-    private:
-        std::list<Point> m_Points;
-    public:
-        Line() = default;
-        ~Line() = default;
-        Line(const Line&) = default;
-        Line(Line&&) = default;
-        Line& operator=(const Line&) = default;
-        Line& operator=(Line&&) = default;
+protected:
+    std::list<Point> m_Points;
+public:
+    Line() = default;
+    ~Line() = default;
+    Line(const Line&) = default;
+    Line(Line&&) = default;
+    Line& operator=(const Line&) = default;
+    Line& operator=(Line&&) = default;
+    Line(Point ABegin, EDirection ADirection, uint8_t ALength);
 
-        bool isHit(const Point& APoint) const;
-        bool isHit(const Line& ALine) const;
-    };
-}
+    bool isHit(const Point& APoint) const;
+    bool isHit(const Line& ALine) const;
+};
 
 #endif

@@ -1,9 +1,5 @@
 #include "Point.hpp"
 
-using Snake::Point;
-using Snake::EDirection;
-using Snake::FIELD_SIZE;
-
 Point::Point(int8_t x, int8_t y)
     : m_X(x), m_Y(y)
 {}

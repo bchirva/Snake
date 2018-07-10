@@ -1,7 +1,14 @@
 #include "Line.hpp"
 
-using Snake::Line;
-using Snake::Point;
+Line::Line(Point ABegin, EDirection ADirection, uint8_t ALength)
+{
+    m_Points.push_back(ABegin);
+    for(int i = 0; i < ALength; i++)
+    {
+        ABegin.move(ADirection, 1);
+        m_Points.push_back(ABegin);
+    }
+}
 
 bool Line::isHit(const Point& APoint) const
 {
