@@ -5,8 +5,10 @@
 #include <thread>
 #include <functional>
 
-#include "Snake.hpp"
 #include "Window.hpp"
+#include "Snake.hpp"
+#include "Wall.hpp"
+#include "Apple.hpp"
 
 class Game
 {
@@ -15,6 +17,8 @@ private:
     Window m_Window;
 
     std::shared_ptr<Snake> m_Snake;
+    std::shared_ptr<Wall> m_Wall;
+    std::shared_ptr<Apple> m_Apple;
 public:
     Game() = default;
     ~Game() = default;
