@@ -1,7 +1,7 @@
 #ifndef LINE_HPP
 #define LINE_HPP
 
-#include <vector>
+#include <list>
 #include "Point.hpp"
 
 namespace Snake
@@ -9,7 +9,7 @@ namespace Snake
     class Line
     {
     private:
-        std::vector<Point> m_Points;
+        std::list<Point> m_Points;
     public:
         Line() = default;
         ~Line() = default;
