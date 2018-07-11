@@ -14,9 +14,14 @@ add_executable(Snake
     Line.cpp
     Apple.cpp
     Point.cpp
+    SpriteLoader.cpp
     )
 
 set_property(TARGET Snake PROPERTY CXX_STANDARD 14)
+
+if(NOT ${CMAKE_CURRENT_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_BINARY_DIR})
+    file(COPY resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/)
+endif()
 
 if(MSVC)
     target_compile_options(Snake PRIVATE /W4)

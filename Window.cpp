@@ -2,9 +2,10 @@
 #include <iostream>
 
 Window::Window()
-    : m_Window(sf::VideoMode(FIELD_SIZE * 16, (FIELD_SIZE + 1) * 16), "Snake")
+    : m_Window(sf::VideoMode(FIELD_SIZE * 16, (FIELD_SIZE + 1) * 16), "Snake", sf::Style::Titlebar | sf::Style::Close)
 {
     m_Window.setActive(false);
+    SpriteLoader::loadSprites();
 }
 
 void Window::addDrawable(const std::shared_ptr<IDrawable>& ADrawable)

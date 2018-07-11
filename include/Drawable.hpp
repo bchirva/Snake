@@ -2,6 +2,7 @@
 #define DRAWABLE_HPP
 
 #include <SFML/Graphics.hpp>
+#include <SpriteLoader.hpp>
 
 class IDrawable
 {

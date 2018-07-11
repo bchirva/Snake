@@ -8,6 +8,7 @@
 
 #include <Drawable.hpp>
 #include <Base.hpp>
+#include <SpriteLoader.hpp>
 
 class Window
 {
