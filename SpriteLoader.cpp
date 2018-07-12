@@ -18,56 +18,55 @@ bool SpriteLoader::loadSprites()
         return false;
     }
     sf::Texture buff;
-    std::cout << "load image of size: " << img.getSize().x << "/" << img.getSize().y << std::endl;
 
     if(!buff.loadFromImage(img, sf::IntRect(0,0,16,16)))
     {
         g_Sprites.clear();
         return false;
     }
-    g_Sprites[ESprite::LineVertical] = buff;
+    g_Sprites[ESprite::Star] = buff;
 
     if(!buff.loadFromImage(img, sf::IntRect(16,0,16,16)))
     {
         g_Sprites.clear();
         return false;
     }
-    g_Sprites[ESprite::LineHorizontal] = buff;
+    g_Sprites[ESprite::LineVertical] = buff;
 
     if(!buff.loadFromImage(img, sf::IntRect(32,0,16,16)))
     {
         g_Sprites.clear();
         return false;
     }
-    g_Sprites[ESprite::BottomRightCorner] = buff;
+    g_Sprites[ESprite::LineHorizontal] = buff;
 
     if(!buff.loadFromImage(img, sf::IntRect(48,0,16,16)))
     {
         g_Sprites.clear();
         return false;
     }
-    g_Sprites[ESprite::BottomLeftCorner] = buff;
+    g_Sprites[ESprite::BottomRightCorner] = buff;
 
     if(!buff.loadFromImage(img, sf::IntRect(64,0,16,16)))
     {
         g_Sprites.clear();
         return false;
     }
-    g_Sprites[ESprite::TopRightCorner] = buff;
+    g_Sprites[ESprite::BottomLeftCorner] = buff;
 
     if(!buff.loadFromImage(img, sf::IntRect(80,0,16,16)))
     {
         g_Sprites.clear();
         return false;
     }
-    g_Sprites[ESprite::TopLeftCorner] = buff;
+    g_Sprites[ESprite::TopRightCorner] = buff;
 
     if(!buff.loadFromImage(img, sf::IntRect(96,0,16,16)))
     {
         g_Sprites.clear();
         return false;
     }
-    g_Sprites[ESprite::LineCross] = buff;
+    g_Sprites[ESprite::TopLeftCorner] = buff;
 
     if(!buff.loadFromImage(img, sf::IntRect(112,0,16,16)))
     {
@@ -80,7 +79,7 @@ bool SpriteLoader::loadSprites()
     {
         g_Sprites.clear();
         return false;
-}
+    }
     g_Sprites[ESprite::LeftHalfCross] = buff;
 
     if(!buff.loadFromImage(img, sf::IntRect(144,0,16,16)))
@@ -102,7 +101,7 @@ bool SpriteLoader::loadSprites()
         g_Sprites.clear();
         return false;
     }
-    g_Sprites[ESprite::Star] = buff;
+    g_Sprites[ESprite::LineCross] = buff;
 
     return true;
 }
