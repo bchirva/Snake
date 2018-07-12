@@ -2,5 +2,5 @@
 
 void Wall::draw(sf::RenderWindow& ADrawingWindow) const
 {
-
+    (void)(ADrawingWindow);
 }

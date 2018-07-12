@@ -5,7 +5,7 @@
 
 class Point
 {
-private:
+protected:
     int8_t m_X = 0;
     int8_t m_Y = 0;
 

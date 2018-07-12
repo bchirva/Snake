@@ -28,8 +28,8 @@ public:
     SpriteLoader() = delete;
     ~SpriteLoader() = delete;
 
-    static void loadSprites();
-    static sf::Texture getSprite(ESprite ARequestedSprite);
+    static bool loadSprites();
+    static const sf::Texture& getSprite(ESprite ARequestedSprite);
 };
 
 #endif

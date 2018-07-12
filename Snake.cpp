@@ -31,12 +31,5 @@ void Snake::makeStep()
 
 void Snake::draw(sf::RenderWindow &ADrawingWindow) const
 {
-    sf::RectangleShape block(sf::Vector2f(32.0f, 32.0f));
-    block.setFillColor(sf::Color(0,100,0));
-    
-    for(auto p: m_Points)
-    {
-        block.setPosition(p.getX(), p.getY());
-        ADrawingWindow.draw(block); 
-    }
+    (void)(ADrawingWindow);
 }
