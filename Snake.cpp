@@ -8,6 +8,7 @@ Snake::Snake(Point ABegin, EDirection ADirection)
 
 void Snake::turn(EDirection ADirection)
 {
+    std::lock_guard<std::mutex> lock(m_DirectionMutex);
     if(ADirection == m_NextDirection)
         return;
 
@@ -22,6 +23,7 @@ void Snake::turn(EDirection ADirection)
 
 void Snake::makeStep()
 {
+    std::lock_guard<std::mutex> lock(m_DirectionMutex);
     m_CurrentDirection = m_NextDirection;
     Point Head(m_Points.front());
     Head.move(m_CurrentDirection, 1);    
