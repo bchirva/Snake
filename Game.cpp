@@ -3,12 +3,10 @@
 
 int Game::exec()
 {
-    m_Apple = std::make_shared<Apple>();
-    //m_Snake = std::make_shared<Snake>();
-    //m_Wall  = std::make_shared<Wall>();
-
+    setup();
+    
     m_Window.addDrawable(m_Apple);
-    //m_Window.addDrawable(m_Snake);
+    m_Window.addDrawable(m_Snake);
     //m_Window.addDrawable(m_Wall);
 
     m_GraphicThread = std::thread(std::bind(&Window::drawLoop, &m_Window));

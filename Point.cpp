@@ -22,7 +22,11 @@ void Point::move(EDirection ADirection, int8_t ADistance)
             break;
         default: break;
     }
+    validate();
+}
 
+void Point::validate()
+{
     if(m_X < 0)                 m_X += FIELD_SIZE;
     else if(m_X >= FIELD_SIZE)  m_Y -= FIELD_SIZE;
     if(m_Y < 0)                 m_Y += FIELD_SIZE;
@@ -32,6 +36,13 @@ void Point::move(EDirection ADirection, int8_t ADistance)
 bool Point::isHit(const Point& APoint) const
 {
     return (m_X == APoint.m_X && m_Y == APoint.m_Y);
+}
+
+void Point::setCoord(int8_t x, int8_t y)
+{
+    m_X = x;
+    m_Y = y;
+    validate();
 }
 
 int8_t Point::getX() const

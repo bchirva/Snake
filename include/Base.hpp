@@ -5,10 +5,10 @@
 
 enum class EDirection
 {
-    Top = 1,
-    Bottom = 2,
-    Left = 4,
-    Right = 8
+    Top = 0,
+    Bottom,
+    Left,
+    Right
 };
 
 constexpr uint8_t FIELD_SIZE = 24;

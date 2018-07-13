@@ -6,6 +6,7 @@
 #include <functional>
 #include <chrono>
 #include <queue>
+#include <random>
 
 #include "Window.hpp"
 #include "Snake.hpp"
@@ -30,8 +31,10 @@ private:
 
     std::queue<sf::Keyboard::Key> m_InputQueue;
     std::mutex m_InputMutex;
+
     void getInput(sf::Keyboard::Key AKey);
     void processInputLoop();
+    inline void setup();
 public:
     Game() = default;
     ~Game() = default;
