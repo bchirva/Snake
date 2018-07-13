@@ -5,6 +5,7 @@ int Game::exec()
 {
     setup();
     
+    m_Window.redirectEvent = std::bind(&Game::getInput, this, std::placeholders::_1);
     m_Window.addDrawable(m_Apple);
     m_Window.addDrawable(m_Snake);
     //m_Window.addDrawable(m_Wall);
@@ -33,52 +34,67 @@ void Game::processInputLoop()
         {
             sf::Keyboard::Key key = m_InputQueue.front();
             m_InputQueue.pop();
+             
+            if(key == (sf::Keyboard::Escape))
+            {
+                std::cout << "QUIT\n";
+                // quit game
+            }
+            if( key == (sf::Keyboard::Pause) ||
+                key == (sf::Keyboard::Space))
+            {
+                std::cout << "PAUSE\n";
+                // pause game
+            }
+
+            if(!m_IsPaused)
+            {
+                if( key == (sf::Keyboard::W) ||
+                    key == (sf::Keyboard::Up) ||
+                    key == (sf::Keyboard::Num8))
+                {
+                    std::cout << "TOP\n";
+                    m_Snake->turn(EDirection::Top);
+                }
+                if( key == (sf::Keyboard::S) ||
+                    key == (sf::Keyboard::Down) ||
+                    key == (sf::Keyboard::Num2))
+                {
+                    m_Snake->turn(EDirection::Bottom);
+                    std::cout << "BOTTOM\n";
+                }
+                if( key == (sf::Keyboard::A) ||
+                    key == (sf::Keyboard::Left) ||
+                    key == (sf::Keyboard::Num4))
+                {
+                     m_Snake->turn(EDirection::Left);
+                     std::cout << "LEFT\n";
+                }
+                if( key == (sf::Keyboard::D) ||
+                    key == (sf::Keyboard::Right) ||
+                    key == (sf::Keyboard::Num6))
+                {
+                    m_Snake->turn(EDirection::Right);
+                    std::cout << "RIGHT\n";
+                }
+            }
+        }
+    }
+}
+
+void Game::setup()
+{
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int8_t> range(0, FIELD_SIZE - 1);
     
-            
+    m_Apple = std::make_shared<Apple>();
+    m_Wall = std::make_shared<Wall>();
+    m_Snake = std::make_shared<Snake>(Point(range(gen), range(gen)), static_cast<EDirection>(range(gen) % 4));
 
-        }
-/*        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-        {
-            std::cout << "QUIT\n";
-            // quit game
-        }
-        if( sf::Keyboard::isKeyPressed(sf::Keyboard::Pause) ||
-            sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-        {
-            std::cout << "PAUSE\n";
-            // pause game
-        }
-
-        if(!m_IsPaused)
-        {
-            if( sf::Keyboard::isKeyPressed(sf::Keyboard::W) ||
-                sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
-                sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
-            {
-                std::cout << "TOP\n";
-                m_Snake->turn(EDirection::Top);
-            }
-            if( sf::Keyboard::isKeyPressed(sf::Keyboard::S) ||
-                sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ||
-                sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
-            {
-                m_Snake->turn(EDirection::Bottom);
-                std::cout << "BOTTOM\n";
-            }
-             if(sf::Keyboard::isKeyPressed(sf::Keyboard::A) ||
-                sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ||
-                sf::Keyboard::isKeyPressed(sf::Keyboard::Num4))
-             {
-                 m_Snake->turn(EDirection::Left);
-                 std::cout << "LEFT\n";
-             }
-             if(sf::Keyboard::isKeyPressed(sf::Keyboard::D) ||
-                sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
-                sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
-             {
-                 m_Snake->turn(EDirection::Right);
-                 std::cout << "RIGHT\n";
-            }
-        }
-*/    }
+    do
+    {
+        m_Apple->setCoord(range(gen), range(gen));
+    } 
+    while(m_Snake->isHit(*m_Apple));
 }
