@@ -25,6 +25,8 @@ void Window::drawLoop()
         {
             if (event.type == sf::Event::Closed)
                 m_Window.close();
+            if (event.type == sf::Event::KeyPressed)
+                redirectEvent(event.key.code);
         }
 
         m_Window.clear();

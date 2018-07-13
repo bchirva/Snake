@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <memory>
+#include <functional>
 
 #include <SFML/Graphics.hpp>
 
@@ -21,6 +22,8 @@ public:
     
     void addDrawable(const std::shared_ptr<IDrawable>& ADrawable);
     void drawLoop();
+
+    std::function<void(sf::Keyboard::Key)> redirectEvent;
 };
 
 #endif

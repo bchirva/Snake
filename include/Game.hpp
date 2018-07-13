@@ -5,6 +5,7 @@
 #include <thread>
 #include <functional>
 #include <chrono>
+#include <queue>
 
 #include "Window.hpp"
 #include "Snake.hpp"
@@ -27,7 +28,10 @@ private:
     bool m_IsRunning = true;
     bool m_IsPaused = false;
 
-    void inputLoop();
+    std::queue<sf::Keyboard::Key> m_InputQueue;
+    std::mutex m_InputMutex;
+    void getInput(sf::Keyboard::Key AKey);
+    void processInputLoop();
 public:
     Game() = default;
     ~Game() = default;
