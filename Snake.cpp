@@ -65,13 +65,14 @@ void Snake::draw(sf::RenderWindow &ADrawingWindow) const
             {
                 Point dSide(dNext.getX() + dPrev.getX(), dNext.getY() + dPrev.getY());
                 if(     dSide.getX() == 1   && dSide.getY() == 1)
-                    texture = SpriteLoader::getSprite(ESprite::BottomRightCorner);
-                else if(dSide.getX() == 1   && dSide.getY() == -1)
-                    texture = SpriteLoader::getSprite(ESprite::TopRightCorner);
-                else if(dSide.getX() == -1  && dSide.getY() == 1)
-                    texture = SpriteLoader::getSprite(ESprite::BottomLeftCorner);
-                else if(dSide.getX() == -1  && dSide.getY() == -1)
                     texture = SpriteLoader::getSprite(ESprite::TopLeftCorner);
+                else if(dSide.getX() == 1   && dSide.getY() == -1)
+                    texture = SpriteLoader::getSprite(ESprite::BottomLeftCorner);
+                else if(dSide.getX() == -1  && dSide.getY() == 1)
+                    texture = SpriteLoader::getSprite(ESprite::TopRightCorner);
+                else if(dSide.getX() == -1  && dSide.getY() == -1)
+                    texture = SpriteLoader::getSprite(ESprite::BottomRightCorner);
+
             }
         }
         else
@@ -91,7 +92,7 @@ void Snake::draw(sf::RenderWindow &ADrawingWindow) const
 
         sf::Sprite sprite(texture);
         sprite.setColor(sf::Color::Green);
-        sprite.setPosition(point->getX(), point->getY());
+        sprite.setPosition(point->getX() * 16, point->getY() * 16);
         ADrawingWindow.draw(sprite);
     }
 }
