@@ -4,6 +4,7 @@ bool Game::g_IsRunning = true;
 bool Game::g_IsPaused = false;
 uint16_t Game::g_Score = 0;
 
+using namespace std::chrono_literals;
 int Game::exec()
 {
     setup();
@@ -15,7 +16,23 @@ int Game::exec()
 
     m_GraphicThread = std::thread(&Window::drawLoop, &m_Window);
     m_InputThread = std::thread(&Game::processInputLoop, this); 
-    
+
+    while(Game::isRunning())
+    {
+        std::this_thread::sleep_for(500ms);
+
+        Point next = m_Snake->aboutToMove();
+        if(next.isHit(*m_Apple))
+        {
+            m_Snake->eat();
+            g_Score++;
+        }
+        else
+        {
+            m_Snake->move();
+        }
+    }
+
     m_InputThread.join();
     m_GraphicThread.join();
     
