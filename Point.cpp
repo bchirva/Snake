@@ -28,7 +28,7 @@ void Point::move(EDirection ADirection, int8_t ADistance)
 void Point::validate()
 {
     if(m_X < 0)                 m_X += FIELD_SIZE;
-    else if(m_X >= FIELD_SIZE)  m_Y -= FIELD_SIZE;
+    else if(m_X >= FIELD_SIZE)  m_X -= FIELD_SIZE;
     if(m_Y < 0)                 m_Y += FIELD_SIZE;
     else if(m_Y >= FIELD_SIZE)  m_Y -= FIELD_SIZE;
 }

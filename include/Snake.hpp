@@ -11,6 +11,7 @@ private:
     EDirection m_CurrentDirection;
     EDirection m_NextDirection;
     std::mutex m_DirectionMutex;
+    mutable std::recursive_mutex m_PointsMutex;
 public:
     Snake(Point ABegin, EDirection ADirection);
     ~Snake() = default;

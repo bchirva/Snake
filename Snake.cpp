@@ -23,8 +23,9 @@ void Snake::turn(EDirection ADirection)
 
 Point Snake::aboutToMove() 
 {
-    std::lock_guard<std::mutex> lock(m_DirectionMutex);
+    std::lock_guard<std::mutex> lock_dir(m_DirectionMutex);
     m_CurrentDirection = m_NextDirection;
+    std::lock_guard<std::recursive_mutex> lock_line(m_PointsMutex);
     Point Head(m_Points.front());
     Head.move(m_CurrentDirection, 1);    
     return Head;
@@ -32,17 +33,20 @@ Point Snake::aboutToMove()
 
 void Snake::eat()
 {
+    std::lock_guard<std::recursive_mutex> lock(m_PointsMutex);
     m_Points.push_front(aboutToMove());
 }
 
 void Snake::move()
 {
+    std::lock_guard<std::recursive_mutex> lock(m_PointsMutex);
     eat();
     m_Points.pop_back();
 }
 
 void Snake::draw(sf::RenderWindow &ADrawingWindow) const
 {
+    std::lock_guard<std::recursive_mutex> lock(m_PointsMutex);
     for(auto point = m_Points.cbegin(); point != m_Points.cend(); ++point)
     {
         sf::Texture texture;
