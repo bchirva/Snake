@@ -1,5 +1,5 @@
 #include "Window.hpp"
-#include <iostream>
+#include <Game.hpp>
 
 Window::Window()
     : m_Window(sf::VideoMode(FIELD_SIZE * 16, (FIELD_SIZE + 1) * 16), "Snake", sf::Style::Titlebar | sf::Style::Close)
@@ -20,18 +20,26 @@ void Window::drawLoop()
 
     while(m_Window.isOpen())
     {
-        sf::Event event;
-        while (m_Window.pollEvent(event))
+        if(Game::isRunning())
         {
-            if (event.type == sf::Event::Closed)
-                m_Window.close();
-            if (event.type == sf::Event::KeyPressed)
-                redirectEvent(event.key.code);
-        }
+            sf::Event event;
+            while (m_Window.pollEvent(event))
+            {
+                if (event.type == sf::Event::Closed)
+                    redirectEvent(sf::Keyboard::Escape);
+                if (event.type == sf::Event::KeyPressed)
+                    redirectEvent(event.key.code);
+            }
 
-        m_Window.clear();
-        for(auto Drawable: m_Drawables)
-            Drawable->draw(m_Window);
-        m_Window.display();
+            m_Window.clear();
+            for(auto Drawable: m_Drawables)
+                Drawable->draw(m_Window);
+            m_Window.display();
+        }
+        else
+        {
+            m_Window.close();
+        }
     }
 }
+

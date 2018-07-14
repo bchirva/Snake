@@ -1,17 +1,20 @@
 #include "Game.hpp"
-#include <iostream>
+
+bool Game::g_IsRunning = true;
+bool Game::g_IsPaused = false;
+uint16_t Game::g_Score = 0;
 
 int Game::exec()
 {
     setup();
     
-    m_Window.redirectEvent = std::bind(&Game::getInput, this, std::placeholders::_1);
+    m_Window.redirectEvent = std::bind(&Game::receiveInput, this, std::placeholders::_1);
     m_Window.addDrawable(m_Apple);
     m_Window.addDrawable(m_Snake);
     //m_Window.addDrawable(m_Wall);
 
-    m_GraphicThread = std::thread(std::bind(&Window::drawLoop, &m_Window));
-    m_InputThread = std::thread(std::bind(&Game::processInputLoop, this)); 
+    m_GraphicThread = std::thread(&Window::drawLoop, &m_Window);
+    m_InputThread = std::thread(&Game::processInputLoop, this); 
     
     m_InputThread.join();
     m_GraphicThread.join();
@@ -19,7 +22,7 @@ int Game::exec()
     return 1;
 }
 
-void Game::getInput(sf::Keyboard::Key AKey)
+void Game::receiveInput(sf::Keyboard::Key AKey)
 {
     std::lock_guard<std::mutex> lock(m_InputMutex);
     m_InputQueue.push(AKey);
@@ -27,7 +30,7 @@ void Game::getInput(sf::Keyboard::Key AKey)
 
 void Game::processInputLoop()
 {
-    while(m_IsRunning)
+    while(Game::isRunning())
     {
         std::lock_guard<std::mutex> lock(m_InputMutex);
         while(!m_InputQueue.empty())
@@ -37,23 +40,21 @@ void Game::processInputLoop()
              
             if(key == (sf::Keyboard::Escape))
             {
-                std::cout << "QUIT\n";
-                // quit game
+                g_IsRunning = false;
+                break; 
             }
             if( key == (sf::Keyboard::Pause) ||
                 key == (sf::Keyboard::Space))
             {
-                std::cout << "PAUSE\n";
-                // pause game
+                g_IsPaused = !g_IsPaused;
             }
 
-            if(!m_IsPaused)
+            if(!Game::isPaused())
             {
                 if( key == (sf::Keyboard::W) ||
                     key == (sf::Keyboard::Up) ||
                     key == (sf::Keyboard::Num8))
                 {
-                    std::cout << "TOP\n";
                     m_Snake->turn(EDirection::Top);
                 }
                 if( key == (sf::Keyboard::S) ||
@@ -61,21 +62,18 @@ void Game::processInputLoop()
                     key == (sf::Keyboard::Num2))
                 {
                     m_Snake->turn(EDirection::Bottom);
-                    std::cout << "BOTTOM\n";
                 }
                 if( key == (sf::Keyboard::A) ||
                     key == (sf::Keyboard::Left) ||
                     key == (sf::Keyboard::Num4))
                 {
                      m_Snake->turn(EDirection::Left);
-                     std::cout << "LEFT\n";
                 }
                 if( key == (sf::Keyboard::D) ||
                     key == (sf::Keyboard::Right) ||
                     key == (sf::Keyboard::Num6))
                 {
                     m_Snake->turn(EDirection::Right);
-                    std::cout << "RIGHT\n";
                 }
             }
         }
@@ -97,4 +95,14 @@ void Game::setup()
         m_Apple->setCoord(range(gen), range(gen));
     } 
     while(m_Snake->isHit(*m_Apple));
+}
+
+bool Game::isRunning()
+{
+    return g_IsRunning;
+}
+
+bool Game::isPaused()
+{
+    return g_IsPaused;
 }

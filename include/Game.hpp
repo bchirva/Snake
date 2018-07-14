@@ -16,28 +16,31 @@
 class Game
 {
 private:
-    std::thread m_GraphicThread;
-    std::thread m_InputThread;
-
     Window m_Window;
-
     std::shared_ptr<Snake> m_Snake;
     std::shared_ptr<Wall> m_Wall;
     std::shared_ptr<Apple> m_Apple;
 
-    uint16_t m_Score = 0;
-    bool m_IsRunning = true;
-    bool m_IsPaused = false;
+    std::thread m_GraphicThread;
+    std::thread m_InputThread;
+
+    static uint16_t g_Score;
+    static bool g_IsRunning;
+    static bool g_IsPaused;
 
     std::queue<sf::Keyboard::Key> m_InputQueue;
     std::mutex m_InputMutex;
 
-    void getInput(sf::Keyboard::Key AKey);
+    void receiveInput(sf::Keyboard::Key AKey);
     void processInputLoop();
+
     inline void setup();
 public:
     Game() = default;
     ~Game() = default;
+
+    static bool isRunning();
+    static bool isPaused();
 
     int exec();
 };
