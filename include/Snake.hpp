@@ -18,7 +18,9 @@ public:
     void turn(EDirection ADirection);
     void draw(sf::RenderWindow& ADrawingWindow) const override;
 
-    void makeStep();
+    void move();
+    void eat();
+    Point aboutToMove();
 };
 
 #endif

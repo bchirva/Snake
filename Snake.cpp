@@ -21,13 +21,24 @@ void Snake::turn(EDirection ADirection)
     m_NextDirection = ADirection;
 }
 
-void Snake::makeStep()
+Point Snake::aboutToMove() 
 {
     std::lock_guard<std::mutex> lock(m_DirectionMutex);
     m_CurrentDirection = m_NextDirection;
     Point Head(m_Points.front());
     Head.move(m_CurrentDirection, 1);    
-    m_Points.push_front(Head);
+    return Head;
+}
+
+void Snake::eat()
+{
+    m_Points.push_front(aboutToMove());
+}
+
+void Snake::move()
+{
+    eat();
+    m_Points.pop_back();
 }
 
 void Snake::draw(sf::RenderWindow &ADrawingWindow) const
