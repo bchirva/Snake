@@ -16,6 +16,7 @@ class Window
 private:
     sf::RenderWindow m_Window;
     std::vector<std::shared_ptr<IDrawable>> m_Drawables;
+    sf::Font m_Font;
 public:
     Window();
     ~Window() = default;
