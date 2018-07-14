@@ -41,6 +41,7 @@ public:
 
     static bool isRunning();
     static bool isPaused();
+    static uint16_t getScore();
 
     int exec();
 };

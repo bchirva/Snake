@@ -123,3 +123,8 @@ bool Game::isPaused()
 {
     return g_IsPaused;
 }
+
+uint16_t Game::getScore()
+{
+    return g_Score;
+}
