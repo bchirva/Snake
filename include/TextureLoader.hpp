@@ -20,16 +20,16 @@ enum class ESprite
     RightHalfCross
 };
 
-class SpriteLoader
+class TextureLoader
 {
 private:
     static std::map<ESprite, sf::Texture> g_Sprites;
 public:
-    SpriteLoader() = delete;
-    ~SpriteLoader() = delete;
+    TextureLoader() = delete;
+    ~TextureLoader() = delete;
 
-    static bool loadSprites();
-    static const sf::Texture& getSprite(ESprite ARequestedSprite);
+    static bool loadTextures();
+    static const sf::Texture& getTexture(ESprite ARequestedSprite);
 };
 
 #endif

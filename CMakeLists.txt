@@ -14,7 +14,7 @@ add_executable(Snake
     Line.cpp
     Apple.cpp
     Point.cpp
-    SpriteLoader.cpp
+    TextureLoader.cpp
     )
 
 set_property(TARGET Snake PROPERTY CXX_STANDARD 14)
