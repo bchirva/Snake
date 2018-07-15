@@ -26,6 +26,10 @@ int Game::exec()
         {
             m_Snake->eat();
             g_Score++;
+
+            relocateApple();
+            if(g_Score % 5 == 0)
+                expandWall();
         }
         else
         {
@@ -107,11 +111,31 @@ void Game::setup()
     m_Wall = std::make_shared<Wall>();
     m_Snake = std::make_shared<Snake>(Point(range(gen), range(gen)), static_cast<EDirection>(range(gen) % 4));
 
+    relocateApple();
+}
+
+void Game::relocateApple()
+{
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int8_t> range(0, FIELD_SIZE - 1);
+
     do
     {
         m_Apple->setCoord(range(gen), range(gen));
-    } 
-    while(m_Snake->isHit(*m_Apple));
+    }
+    while(m_Snake->isHit(*m_Apple) && m_Wall->isHit(*m_Apple));
+}
+
+void Game::expandWall()
+{
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int8_t> range(0, FIELD_SIZE - 1);
+
+    Point start(range(gen), range(gen));
+    EDirection dir = static_cast<EDirection>(range(gen) % 4);
+    Line line(start, dir, 4);
 }
 
 bool Game::isRunning()

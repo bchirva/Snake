@@ -10,7 +10,7 @@ public:
     Wall() = default;
     ~Wall() = default;
 
-    void expand(Line&& ALine);
+    void expand(Line ALine);
     void draw(sf::RenderWindow& ADrawingWindow) const override;
 };
 

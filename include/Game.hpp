@@ -35,6 +35,8 @@ private:
     void processInputLoop();
 
     inline void setup();
+    inline void relocateApple();
+    inline void expandWall();
 public:
     Game() = default;
     ~Game() = default;
