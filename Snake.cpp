@@ -70,13 +70,12 @@ void Snake::draw(sf::RenderWindow &ADrawingWindow) const
                 Point dSide(dNext.getX() + dPrev.getX(), dNext.getY() + dPrev.getY());
                 if(     dSide.getX() == 1   && dSide.getY() == 1)
                     texture = TextureLoader::getTexture(ESprite::TopLeftCorner);
-                else if(dSide.getX() == 1   && dSide.getY() == -1)
+                else if(dSide.getX() == 1   && dSide.getY() == FIELD_SIZE - 1)
                     texture = TextureLoader::getTexture(ESprite::BottomLeftCorner);
-                else if(dSide.getX() == -1  && dSide.getY() == 1)
+                else if(dSide.getX() == FIELD_SIZE - 1  && dSide.getY() == 1)
                     texture = TextureLoader::getTexture(ESprite::TopRightCorner);
-                else if(dSide.getX() == -1  && dSide.getY() == -1)
+                else if(dSide.getX() == FIELD_SIZE - 1  && dSide.getY() == FIELD_SIZE - 1)
                     texture = TextureLoader::getTexture(ESprite::BottomRightCorner);
-
             }
         }
         else

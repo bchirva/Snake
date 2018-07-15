@@ -2,7 +2,9 @@
 
 Point::Point(int8_t x, int8_t y)
     : m_X(x), m_Y(y)
-{}
+{
+    validate();
+}
 
 void Point::move(EDirection ADirection, int8_t ADistance)
 {

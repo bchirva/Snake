@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Game.hpp"
 
 bool Game::g_IsRunning = true;
@@ -10,16 +11,17 @@ int Game::exec()
     setup();
     
     m_Window.redirectEvent = std::bind(&Game::receiveInput, this, std::placeholders::_1);
+    
     m_Window.addDrawable(m_Apple);
     m_Window.addDrawable(m_Snake);
-    //m_Window.addDrawable(m_Wall);
+    m_Window.addDrawable(m_Wall);
 
     m_GraphicThread = std::thread(&Window::drawLoop, &m_Window);
     m_InputThread = std::thread(&Game::processInputLoop, this); 
 
     while(Game::isRunning())
     {
-        std::this_thread::sleep_for(500ms);
+        std::this_thread::sleep_for(300ms);
 
         Point next = m_Snake->aboutToMove();
         if(next.isHit(*m_Apple))
@@ -124,7 +126,7 @@ void Game::relocateApple()
     {
         m_Apple->setCoord(range(gen), range(gen));
     }
-    while(m_Snake->isHit(*m_Apple) && m_Wall->isHit(*m_Apple));
+    while(m_Snake->isHit(*m_Apple) || m_Wall->isHit(*m_Apple));
 }
 
 void Game::expandWall()
@@ -133,9 +135,15 @@ void Game::expandWall()
     std::mt19937 gen(rd());
     std::uniform_int_distribution<int8_t> range(0, FIELD_SIZE - 1);
 
-    Point start(range(gen), range(gen));
-    EDirection dir = static_cast<EDirection>(range(gen) % 4);
-    Line line(start, dir, 4);
+    Line expandLine;
+    do
+    {
+        Point start(range(gen), range(gen));
+        EDirection dir = static_cast<EDirection>(range(gen) % 4);
+        expandLine = Line(start, dir, 4);
+    }
+    while (expandLine.isHit(*m_Apple) || expandLine.isHit(*m_Snake) || expandLine.isHit(m_Snake->aboutToMove()));
+    m_Wall->expand(expandLine);
 }
 
 bool Game::isRunning()
