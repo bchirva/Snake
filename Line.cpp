@@ -29,3 +29,13 @@ bool Line::isHit(const Line& ALine) const
     }
     return false;
 }
+
+auto Line::begin() -> decltype(m_Points.begin())
+{
+    return m_Points.begin();
+}
+
+auto Line::end() -> decltype(m_Points.end())
+{
+    return m_Points.end();
+}

@@ -19,6 +19,9 @@ public:
 
     bool isHit(const Point& APoint) const;
     bool isHit(const Line& ALine) const;
+
+    auto begin() -> decltype(m_Points.begin());
+    auto end() -> decltype(m_Points.end());
 };
 
 #endif
