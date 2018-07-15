@@ -1,15 +1,15 @@
-#include <SpriteLoader.hpp>
+#include "TextureLoader.hpp"
 #include <iostream>
 
-std::map<ESprite, sf::Texture> SpriteLoader::g_Sprites;
+std::map<ESprite, sf::Texture> TextureLoader::g_Sprites;
 
-const sf::Texture& SpriteLoader::getSprite(ESprite ARequestedSprite)
+const sf::Texture& TextureLoader::getTexture(ESprite ARequestedSprite)
 {
     auto it = g_Sprites.find(ARequestedSprite);
     return it->second;
 }
 
-bool SpriteLoader::loadSprites()
+bool TextureLoader::loadTextures()
 {
     sf::Image img;
     if(!img.loadFromFile("./resources/img/sprite_sheet.png"))

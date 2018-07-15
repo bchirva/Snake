@@ -62,20 +62,20 @@ void Snake::draw(sf::RenderWindow &ADrawingWindow) const
             Point dPrev(point->getX() - prev->getX(), point->getY() - prev->getY());
 
             if(     dNext.getX() != 0 && dPrev.getX() != 0)
-                texture = SpriteLoader::getSprite(ESprite::LineHorizontal);
+                texture = TextureLoader::getTexture(ESprite::LineHorizontal);
             else if(dNext.getY() != 0 && dPrev.getY() != 0)
-                texture = SpriteLoader::getSprite(ESprite::LineVertical);
+                texture = TextureLoader::getTexture(ESprite::LineVertical);
             else
             {
                 Point dSide(dNext.getX() + dPrev.getX(), dNext.getY() + dPrev.getY());
                 if(     dSide.getX() == 1   && dSide.getY() == 1)
-                    texture = SpriteLoader::getSprite(ESprite::TopLeftCorner);
+                    texture = TextureLoader::getTexture(ESprite::TopLeftCorner);
                 else if(dSide.getX() == 1   && dSide.getY() == -1)
-                    texture = SpriteLoader::getSprite(ESprite::BottomLeftCorner);
+                    texture = TextureLoader::getTexture(ESprite::BottomLeftCorner);
                 else if(dSide.getX() == -1  && dSide.getY() == 1)
-                    texture = SpriteLoader::getSprite(ESprite::TopRightCorner);
+                    texture = TextureLoader::getTexture(ESprite::TopRightCorner);
                 else if(dSide.getX() == -1  && dSide.getY() == -1)
-                    texture = SpriteLoader::getSprite(ESprite::BottomRightCorner);
+                    texture = TextureLoader::getTexture(ESprite::BottomRightCorner);
 
             }
         }
@@ -89,9 +89,9 @@ void Snake::draw(sf::RenderWindow &ADrawingWindow) const
 
             Point dSide(point->getX() - side->getX(), point->getY() - side->getY());
             if(dSide.getY() != 0)
-                texture = SpriteLoader::getSprite(ESprite::LineVertical);
+                texture = TextureLoader::getTexture(ESprite::LineVertical);
             else if(dSide.getX() != 0)
-                texture = SpriteLoader::getSprite(ESprite::LineHorizontal);
+                texture = TextureLoader::getTexture(ESprite::LineHorizontal);
         }
 
         sf::Sprite sprite(texture);

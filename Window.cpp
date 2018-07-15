@@ -5,7 +5,7 @@ Window::Window()
     : m_Window(sf::VideoMode(FIELD_SIZE * 16, (FIELD_SIZE * 16) + 24), "Snake", sf::Style::Titlebar | sf::Style::Close)
 {
     m_Window.setActive(false);
-    SpriteLoader::loadSprites();
+    TextureLoader::loadTextures();
     m_Font.loadFromFile("./resources/font/VeraMono.ttf");
 }
 

@@ -7,9 +7,9 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <Drawable.hpp>
-#include <Base.hpp>
-#include <SpriteLoader.hpp>
+#include "Drawable.hpp"
+#include "Base.hpp"
+#include "TextureLoader.hpp"
 
 class Window
 {
