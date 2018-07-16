@@ -156,6 +156,9 @@ void Game::step()
     }
     else
     {
+        if(m_Snake->isHit(next) || m_Snake->isHit(next))
+        m_Window.addDrawable(std::make_unique<DeathSpot>(next));
+
         m_Snake->move();
     }
 }

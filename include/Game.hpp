@@ -12,14 +12,15 @@
 #include "Snake.hpp"
 #include "Wall.hpp"
 #include "Apple.hpp"
+#include "DeathSpot.hpp"
 
 class Game
 {
 private:
     Window m_Window;
-    std::shared_ptr<Snake> m_Snake;
-    std::shared_ptr<Wall> m_Wall;
-    std::shared_ptr<Apple> m_Apple;
+    std::shared_ptr<Snake> m_Snake = nullptr;
+    std::shared_ptr<Wall> m_Wall = nullptr;
+    std::shared_ptr<Apple> m_Apple = nullptr;
 
     std::thread m_GraphicThread;
     std::thread m_InputThread;

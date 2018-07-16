@@ -15,6 +15,7 @@ add_executable(Snake
     Apple.cpp
     Point.cpp
     TextureLoader.cpp
+    DeathSpot.cpp
     )
 
 set_property(TARGET Snake PROPERTY CXX_STANDARD 14)
