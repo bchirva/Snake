@@ -1,6 +1,6 @@
-#include <iostream>
 #include "Game.hpp"
 
+constexpr std::chrono::milliseconds Game::g_Tick;
 bool Game::g_IsRunning = true;
 bool Game::g_IsPaused = false;
 uint16_t Game::g_Score = 0;
@@ -21,21 +21,15 @@ int Game::exec()
 
     while(Game::isRunning())
     {
-        std::this_thread::sleep_for(300ms);
-
-        Point next = m_Snake->aboutToMove();
-        if(next.isHit(*m_Apple))
+        std::this_thread::sleep_for(g_Tick);
+        if(!g_IsPaused)
         {
-            m_Snake->eat();
-            g_Score++;
-
-            relocateApple();
-            if(g_Score % 5 == 0)
-                expandWall();
-        }
-        else
-        {
-            m_Snake->move();
+            m_TickCount++;
+            if(m_TickCount == 50)
+            {
+                step();
+                m_TickCount = 0;
+            }
         }
     }
 
@@ -144,6 +138,26 @@ void Game::expandWall()
     }
     while (expandLine.isHit(*m_Apple) || expandLine.isHit(*m_Snake) || expandLine.isHit(m_Snake->aboutToMove()));
     m_Wall->expand(expandLine);
+}
+
+void Game::step()
+{
+    Point next = m_Snake->aboutToMove();
+    if(next.isHit(*m_Apple))
+    {
+        m_Snake->eat();
+        g_Score++;
+
+        relocateApple();
+        if(g_Score % 5 == 0)
+        {
+            expandWall();
+        }
+    }
+    else
+    {
+        m_Snake->move();
+    }
 }
 
 bool Game::isRunning()

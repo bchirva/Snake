@@ -94,7 +94,7 @@ void Snake::draw(sf::RenderWindow &ADrawingWindow) const
         }
 
         sf::Sprite sprite(texture);
-        sprite.setColor(sf::Color::Green);
+        sprite.setColor(sf::Color(0, 96, 0));
         sprite.setPosition(point->getX() * 16, point->getY() * 16);
         ADrawingWindow.draw(sprite);
     }

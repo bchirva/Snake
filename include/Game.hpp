@@ -27,6 +27,9 @@ private:
     static uint16_t g_Score;
     static bool g_IsRunning;
     static bool g_IsPaused;
+    
+    uint8_t m_TickCount = 0;
+    static constexpr std::chrono::milliseconds g_Tick {10};
 
     std::queue<sf::Keyboard::Key> m_InputQueue;
     std::mutex m_InputMutex;
@@ -35,6 +38,7 @@ private:
     void processInputLoop();
 
     inline void setup();
+    inline void step();
     inline void relocateApple();
     inline void expandWall();
 public:

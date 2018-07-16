@@ -17,6 +17,8 @@ private:
     sf::RenderWindow m_Window;
     std::vector<std::shared_ptr<IDrawable>> m_Drawables;
     sf::Font m_Font;
+
+    inline void draw();
 public:
     Window();
     ~Window() = default;
