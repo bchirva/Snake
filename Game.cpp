@@ -1,8 +1,9 @@
 #include "Game.hpp"
 
 constexpr std::chrono::milliseconds Game::g_Tick;
-bool Game::g_IsRunning = true;
+bool Game::g_IsGameOver = false;
 bool Game::g_IsPaused = false;
+bool Game::g_IsAboutToQuit = false;
 uint16_t Game::g_Score = 0;
 
 using namespace std::chrono_literals;
@@ -19,10 +20,10 @@ int Game::exec()
     m_GraphicThread = std::thread(&Window::drawLoop, &m_Window);
     m_InputThread = std::thread(&Game::processInputLoop, this); 
 
-    while(Game::isRunning())
+    while(!Game::isAboutToQuit())
     {
         std::this_thread::sleep_for(g_Tick);
-        if(!g_IsPaused)
+        if(!g_IsPaused && !g_IsGameOver)
         {
             m_TickCount++;
             if(m_TickCount == 50)
@@ -47,7 +48,7 @@ void Game::receiveInput(sf::Keyboard::Key AKey)
 
 void Game::processInputLoop()
 {
-    while(Game::isRunning())
+    while(!Game::isAboutToQuit())
     {
         std::lock_guard<std::mutex> lock(m_InputMutex);
         while(!m_InputQueue.empty())
@@ -57,7 +58,7 @@ void Game::processInputLoop()
              
             if(key == (sf::Keyboard::Escape))
             {
-                g_IsRunning = false;
+                g_IsAboutToQuit = true;
                 break; 
             }
             if( key == (sf::Keyboard::Pause) ||
@@ -157,20 +158,28 @@ void Game::step()
     else
     {
         if(m_Snake->isHit(next) || m_Snake->isHit(next))
-        m_Window.addDrawable(std::make_unique<DeathSpot>(next));
+        {
+            m_Window.addDrawable(std::make_unique<DeathSpot>(next));
+            g_IsGameOver = true;
+        }
 
         m_Snake->move();
     }
 }
 
-bool Game::isRunning()
+bool Game::isGameOver()
 {
-    return g_IsRunning;
+    return g_IsGameOver;
 }
 
 bool Game::isPaused()
 {
     return g_IsPaused;
+}
+
+bool Game::isAboutToQuit()
+{
+    return g_IsAboutToQuit;
 }
 
 uint16_t Game::getScore()

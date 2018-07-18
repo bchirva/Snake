@@ -26,9 +26,10 @@ private:
     std::thread m_InputThread;
 
     static uint16_t g_Score;
-    static bool g_IsRunning;
+    static bool g_IsGameOver;
     static bool g_IsPaused;
-    
+    static bool g_IsAboutToQuit;
+
     uint8_t m_TickCount = 0;
     static constexpr std::chrono::milliseconds g_Tick {10};
 
@@ -46,8 +47,9 @@ public:
     Game() = default;
     ~Game() = default;
 
-    static bool isRunning();
+    static bool isGameOver();
     static bool isPaused();
+    static bool isAboutToQuit();
     static uint16_t getScore();
 
     int exec();

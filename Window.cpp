@@ -21,7 +21,7 @@ void Window::drawLoop()
 
     while(m_Window.isOpen())
     {
-        if(Game::isRunning())
+        if(!Game::isAboutToQuit())
         {
             sf::Event event;
             while (m_Window.pollEvent(event))
