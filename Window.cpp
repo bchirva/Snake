@@ -14,6 +14,11 @@ void Window::addDrawable(const std::shared_ptr<IDrawable>& ADrawable)
     m_Drawables.push_back(ADrawable);
 }
 
+void Window::reset()
+{
+    m_Drawables.clear();
+}
+
 void Window::drawLoop()
 {
     m_Window.setFramerateLimit(60); 
