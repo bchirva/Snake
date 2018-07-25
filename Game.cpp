@@ -1,6 +1,7 @@
 #include "Game.hpp"
 
 constexpr std::chrono::milliseconds Game::g_Tick;
+bool Game::g_IsLaunched = false;
 bool Game::g_IsGameOver = false;
 bool Game::g_IsPaused = false;
 bool Game::g_IsAboutToQuit = false;
@@ -165,6 +166,11 @@ void Game::step()
 
         m_Snake->move();
     }
+}
+
+bool Game::isLaunched()
+{
+    return g_IsLaunched;
 }
 
 bool Game::isGameOver()

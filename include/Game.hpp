@@ -26,6 +26,8 @@ private:
     std::thread m_InputThread;
 
     static uint16_t g_Score;
+
+    static bool g_IsLaunched;
     static bool g_IsGameOver;
     static bool g_IsPaused;
     static bool g_IsAboutToQuit;
@@ -47,6 +49,7 @@ public:
     Game() = default;
     ~Game() = default;
 
+    static bool isLaunched();
     static bool isGameOver();
     static bool isPaused();
     static bool isAboutToQuit();

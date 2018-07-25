@@ -32,7 +32,7 @@ void Window::drawLoop()
                     redirectEvent(event.key.code);
             }
             m_Window.clear();
-            draw();
+            drawGame();
 
         }
         else
@@ -42,7 +42,7 @@ void Window::drawLoop()
     }
 }
 
-void Window::draw()
+void Window::drawGame()
 {
     sf::RectangleShape field(sf::Vector2f(FIELD_SIZE * 16, FIELD_SIZE * 16));
     field.setFillColor(sf::Color(160, 160, 0));

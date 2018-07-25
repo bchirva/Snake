@@ -18,7 +18,9 @@ private:
     std::vector<std::shared_ptr<IDrawable>> m_Drawables;
     sf::Font m_Font;
 
-    inline void draw();
+    inline void drawGame();
+    inline void showMenu();
+
 public:
     Window();
     ~Window() = default;
