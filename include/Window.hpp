@@ -4,6 +4,8 @@
 #include <vector>
 #include <memory>
 #include <functional>
+#include <map>
+#include <string>
 
 #include <SFML/Graphics.hpp>
 
@@ -14,9 +16,21 @@
 class Window
 {
 private:
+    enum class EMenuItem
+    {
+        NewGame,
+        Options,
+        Records,
+        Quit
+    };
+
+    static const std::map<EMenuItem, std::string> g_MenuItems; 
+
     sf::RenderWindow m_Window;
-    std::vector<std::shared_ptr<IDrawable>> m_Drawables;
     sf::Font m_Font;
+    
+    EMenuItem m_CurrentMenuItem;
+    std::vector<std::shared_ptr<IDrawable>> m_Drawables;
 
     inline void drawGame();
     inline void showMenu();
@@ -25,6 +39,7 @@ public:
     Window();
     ~Window() = default;
     
+    void open();    
     void addDrawable(const std::shared_ptr<IDrawable>& ADrawable);
     void drawLoop();
 
