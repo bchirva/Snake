@@ -29,12 +29,13 @@ private:
     uint8_t m_TickCount = 0;
     static constexpr std::chrono::milliseconds g_Tick {10};
 
-    std::queue<sf::Keyboard::Key> m_InputQueue;
+    std::thread m_GameThread;
     std::thread m_InputThread;
+    std::queue<sf::Keyboard::Key> m_InputQueue;
     std::mutex m_InputMutex;
 
-    void receiveInput(sf::Keyboard::Key AKey);
     void processInputLoop();
+    void gameLoop();
 
     inline void setup();
     inline void step();
@@ -45,10 +46,12 @@ public:
     Game() = default;
     ~Game() = default;
 
-    bool isGameOver();
-    bool isPaused();
-    bool isAboutToQuit();
-    uint16_t getScore();
+    bool isGameOver() const;
+    bool isPaused() const;
+    bool isAboutToQuit() const;
+    uint16_t getScore() const;
+
+    void receiveInput(sf::Keyboard::Key AKey);
 
     void play();
     std::function<void(std::shared_ptr<IDrawable>)> newDrawable;

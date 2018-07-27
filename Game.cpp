@@ -5,9 +5,23 @@ constexpr std::chrono::milliseconds Game::g_Tick;
 using namespace std::chrono_literals;
 
 void Game::play()
-{
-    m_InputThread = std::thread(&Game::processInputLoop, this);
+{    
     setup();
+    m_InputThread = std::thread(&Game::processInputLoop, this);
+    m_GameThread = std::thread(&Game::gameLoop, this);
+    //LOCKING
+    m_GameThread.join();
+    m_InputThread.join();
+}
+
+void Game::receiveInput(sf::Keyboard::Key AKey)
+{
+    std::lock_guard<std::mutex> lock(m_InputMutex);
+    m_InputQueue.push(AKey);
+}
+
+void Game::gameLoop()
+{
     while(!Game::isAboutToQuit())
     {
         std::this_thread::sleep_for(g_Tick);
@@ -21,13 +35,6 @@ void Game::play()
             }
         }
     }
-    m_InputThread.join();
-}
-
-void Game::receiveInput(sf::Keyboard::Key AKey)
-{
-    std::lock_guard<std::mutex> lock(m_InputMutex);
-    m_InputQueue.push(AKey);
 }
 
 void Game::processInputLoop()
@@ -53,30 +60,14 @@ void Game::processInputLoop()
 
             if(!Game::isPaused())
             {
-                if( key == (sf::Keyboard::W) ||
-                    key == (sf::Keyboard::Up) ||
-                    key == (sf::Keyboard::Num8))
-                {
+                if( key == sf::Keyboard::W || key == sf::Keyboard::Up)
                     m_Snake->turn(EDirection::Top);
-                }
-                if( key == (sf::Keyboard::S) ||
-                    key == (sf::Keyboard::Down) ||
-                    key == (sf::Keyboard::Num2))
-                {
-                    m_Snake->turn(EDirection::Bottom);
-                }
-                if( key == (sf::Keyboard::A) ||
-                    key == (sf::Keyboard::Left) ||
-                    key == (sf::Keyboard::Num4))
-                {
-                     m_Snake->turn(EDirection::Left);
-                }
-                if( key == (sf::Keyboard::D) ||
-                    key == (sf::Keyboard::Right) ||
-                    key == (sf::Keyboard::Num6))
-                {
+                if( key == sf::Keyboard::S || key == sf::Keyboard::Down)
+                    m_Snake->turn(EDirection::Down);
+                if( key == sf::Keyboard::A || key == sf::Keyboard::Left)
+                    m_Snake->turn(EDirection::Left);
+                if( key == sf::Keyboard::D || key == sf::Keyboard::Right)
                     m_Snake->turn(EDirection::Right);
-                }
             }
         }
     }
@@ -155,22 +146,22 @@ void Game::step()
     }
 }
 
-bool Game::isGameOver()
+bool Game::isGameOver() const
 {
     return m_IsGameOver;
 }
 
-bool Game::isPaused()
+bool Game::isPaused() const
 {
     return m_IsPaused;
 }
 
-bool Game::isAboutToQuit()
+bool Game::isAboutToQuit() const
 {
     return m_IsAboutToQuit;
 }
 
-uint16_t Game::getScore()
+uint16_t Game::getScore() const
 {
     return m_Score;
 }

@@ -13,7 +13,7 @@ void Point::move(EDirection ADirection, int8_t ADistance)
         case EDirection::Top:
             m_Y -= ADistance;
             break;
-        case EDirection::Bottom:
+        case EDirection::Down:
             m_Y += ADistance;
             break;
         case EDirection::Right:

@@ -25,26 +25,22 @@ private:
     };
 
     static const std::map<EMenuItem, std::string> g_MenuItems; 
+    EMenuItem m_CurrentMenuItem;
 
     sf::RenderWindow m_Window;
     sf::Font m_Font;
-    
-    EMenuItem m_CurrentMenuItem;
-    std::vector<std::shared_ptr<IDrawable>> m_Drawables;
 
-    inline void drawGame();
-    inline void showMenu();
+    std::vector<std::shared_ptr<IDrawable>> m_Drawables;
+    void addDrawable(const std::shared_ptr<IDrawable>& ADrawable);
+
+    void drawGame();
+    void showMenu();
 
 public:
     Window();
     ~Window() = default;
     
-    void open();    
-    void addDrawable(const std::shared_ptr<IDrawable>& ADrawable);
-    void reset();
-    void drawLoop();
-
-    std::function<void(sf::Keyboard::Key)> redirectEvent;
+    void open();
 };
 
 #endif
