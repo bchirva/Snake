@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
 project(Snake)
 
@@ -49,3 +49,6 @@ target_link_libraries(Snake
         Threads::Threads
     )
 
+if (CMAKE_GENERATOR STREQUAL "Unix Makefiles")
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+endif()
