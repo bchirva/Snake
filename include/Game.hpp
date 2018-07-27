@@ -41,10 +41,14 @@ private:
     void receiveInput(sf::Keyboard::Key AKey);
     void processInputLoop();
 
+
+    void play();
+
     inline void setup();
     inline void step();
     inline void relocateApple();
     inline void expandWall();
+
 public:
     Game() = default;
     ~Game() = default;

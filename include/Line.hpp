@@ -10,7 +10,7 @@ protected:
     std::list<Point> m_Points;
 public:
     Line() = default;
-    ~Line() = default;
+    virtual ~Line() = default;
     Line(const Line&) = default;
     Line(Line&&) = default;
     Line& operator=(const Line&) = default;

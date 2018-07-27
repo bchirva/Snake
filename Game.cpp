@@ -10,17 +10,22 @@ uint16_t Game::g_Score = 0;
 using namespace std::chrono_literals;
 int Game::exec()
 {
-    setup();
-    
     m_Window.redirectEvent = std::bind(&Game::receiveInput, this, std::placeholders::_1);
-    
-    m_Window.addDrawable(m_Apple);
-    m_Window.addDrawable(m_Snake);
-    m_Window.addDrawable(m_Wall);
 
     m_GraphicThread = std::thread(&Window::drawLoop, &m_Window);
     m_InputThread = std::thread(&Game::processInputLoop, this); 
 
+    play();
+
+    m_InputThread.join();
+    m_GraphicThread.join();
+    
+    return 1;
+}
+
+void Game::play()
+{
+    setup();
     while(!Game::isAboutToQuit())
     {
         std::this_thread::sleep_for(g_Tick);
@@ -34,11 +39,6 @@ int Game::exec()
             }
         }
     }
-
-    m_InputThread.join();
-    m_GraphicThread.join();
-    
-    return 1;
 }
 
 void Game::receiveInput(sf::Keyboard::Key AKey)
@@ -110,6 +110,11 @@ void Game::setup()
     m_Snake = std::make_shared<Snake>(Point(range(gen), range(gen)), static_cast<EDirection>(range(gen) % 4));
 
     relocateApple();
+
+    m_Window.reset();
+    m_Window.addDrawable(m_Apple);
+    m_Window.addDrawable(m_Snake);
+    m_Window.addDrawable(m_Wall);
 }
 
 void Game::relocateApple()

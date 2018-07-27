@@ -41,6 +41,7 @@ public:
     
     void open();    
     void addDrawable(const std::shared_ptr<IDrawable>& ADrawable);
+    void reset();
     void drawLoop();
 
     std::function<void(sf::Keyboard::Key)> redirectEvent;

@@ -14,7 +14,7 @@ protected:
 
 public:
     Point() = default;
-    ~Point()= default;
+    virtual ~Point()= default;
     Point(const Point&) = default;
     Point(Point&&) = default;
     Point& operator=(const Point&) = default;
