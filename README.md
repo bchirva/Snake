@@ -3,7 +3,7 @@ Written in C++ with [SFML](https://sfml-dev.org).
 
 ##### Requirements:
 * C++ compiler that support 14 standard;
-* CMake at least 3.1 version;
+* CMake at least 3.5 version;
 * SFML (v2.5 is used in this project)
 
 ##### Control:
