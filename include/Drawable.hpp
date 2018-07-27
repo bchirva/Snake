@@ -7,6 +7,7 @@
 class IDrawable
 {
 public:
+    virtual ~IDrawable() = default;
     virtual void draw(sf::RenderWindow& ADrawingWindow) const = 0;
 };
 
