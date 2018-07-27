@@ -1,35 +1,17 @@
 #include "Game.hpp"
 
 constexpr std::chrono::milliseconds Game::g_Tick;
-bool Game::g_IsLaunched = false;
-bool Game::g_IsGameOver = false;
-bool Game::g_IsPaused = false;
-bool Game::g_IsAboutToQuit = false;
-uint16_t Game::g_Score = 0;
 
 using namespace std::chrono_literals;
-int Game::exec()
-{
-    m_Window.redirectEvent = std::bind(&Game::receiveInput, this, std::placeholders::_1);
-
-    m_GraphicThread = std::thread(&Window::drawLoop, &m_Window);
-    m_InputThread = std::thread(&Game::processInputLoop, this); 
-
-    play();
-
-    m_InputThread.join();
-    m_GraphicThread.join();
-    
-    return 1;
-}
 
 void Game::play()
 {
+    m_InputThread = std::thread(&Game::processInputLoop, this);
     setup();
     while(!Game::isAboutToQuit())
     {
         std::this_thread::sleep_for(g_Tick);
-        if(!g_IsPaused && !g_IsGameOver)
+        if(!m_IsPaused && !m_IsGameOver)
         {
             m_TickCount++;
             if(m_TickCount == 50)
@@ -39,6 +21,7 @@ void Game::play()
             }
         }
     }
+    m_InputThread.join();
 }
 
 void Game::receiveInput(sf::Keyboard::Key AKey)
@@ -59,13 +42,13 @@ void Game::processInputLoop()
              
             if(key == (sf::Keyboard::Escape))
             {
-                g_IsAboutToQuit = true;
+                m_IsAboutToQuit = true;
                 break; 
             }
             if( key == (sf::Keyboard::Pause) ||
                 key == (sf::Keyboard::Space))
             {
-                g_IsPaused = !g_IsPaused;
+                m_IsPaused = !m_IsPaused;
             }
 
             if(!Game::isPaused())
@@ -111,10 +94,9 @@ void Game::setup()
 
     relocateApple();
 
-    m_Window.reset();
-    m_Window.addDrawable(m_Apple);
-    m_Window.addDrawable(m_Snake);
-    m_Window.addDrawable(m_Wall);
+    newDrawable(m_Apple);
+    newDrawable(m_Snake);
+    newDrawable(m_Wall);
 }
 
 void Game::relocateApple()
@@ -153,10 +135,10 @@ void Game::step()
     if(next.isHit(*m_Apple))
     {
         m_Snake->eat();
-        g_Score++;
+        m_Score++;
 
         relocateApple();
-        if(g_Score % 5 == 0)
+        if(m_Score % 5 == 0)
         {
             expandWall();
         }
@@ -165,35 +147,30 @@ void Game::step()
     {
         if(m_Snake->isHit(next) || m_Snake->isHit(next))
         {
-            m_Window.addDrawable(std::make_unique<DeathSpot>(next));
-            g_IsGameOver = true;
+            newDrawable(std::make_unique<DeathSpot>(next));
+            m_IsGameOver = true;
         }
 
         m_Snake->move();
     }
 }
 
-bool Game::isLaunched()
-{
-    return g_IsLaunched;
-}
-
 bool Game::isGameOver()
 {
-    return g_IsGameOver;
+    return m_IsGameOver;
 }
 
 bool Game::isPaused()
 {
-    return g_IsPaused;
+    return m_IsPaused;
 }
 
 bool Game::isAboutToQuit()
 {
-    return g_IsAboutToQuit;
+    return m_IsAboutToQuit;
 }
 
 uint16_t Game::getScore()
 {
-    return g_Score;
+    return m_Score;
 }

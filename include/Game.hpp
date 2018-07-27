@@ -8,7 +8,6 @@
 #include <queue>
 #include <random>
 
-#include "Window.hpp"
 #include "Snake.hpp"
 #include "Wall.hpp"
 #include "Apple.hpp"
@@ -17,32 +16,25 @@
 class Game
 {
 private:
-    Window m_Window;
     std::shared_ptr<Snake> m_Snake = nullptr;
     std::shared_ptr<Wall> m_Wall = nullptr;
     std::shared_ptr<Apple> m_Apple = nullptr;
 
-    std::thread m_GraphicThread;
-    std::thread m_InputThread;
+    uint16_t m_Score = 0;
 
-    static uint16_t g_Score;
-
-    static bool g_IsLaunched;
-    static bool g_IsGameOver;
-    static bool g_IsPaused;
-    static bool g_IsAboutToQuit;
+    bool m_IsGameOver = false;
+    bool m_IsPaused = false;
+    bool m_IsAboutToQuit = false;
 
     uint8_t m_TickCount = 0;
     static constexpr std::chrono::milliseconds g_Tick {10};
 
     std::queue<sf::Keyboard::Key> m_InputQueue;
+    std::thread m_InputThread;
     std::mutex m_InputMutex;
 
     void receiveInput(sf::Keyboard::Key AKey);
     void processInputLoop();
-
-
-    void play();
 
     inline void setup();
     inline void step();
@@ -53,13 +45,13 @@ public:
     Game() = default;
     ~Game() = default;
 
-    static bool isLaunched();
-    static bool isGameOver();
-    static bool isPaused();
-    static bool isAboutToQuit();
-    static uint16_t getScore();
+    bool isGameOver();
+    bool isPaused();
+    bool isAboutToQuit();
+    uint16_t getScore();
 
-    int exec();
+    void play();
+    std::function<void(std::shared_ptr<IDrawable>)> newDrawable;
 };
 
 #endif
