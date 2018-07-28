@@ -4,12 +4,15 @@ constexpr std::chrono::milliseconds Game::g_Tick;
 
 using namespace std::chrono_literals;
 
-void Game::play()
+void Game::start()
 {    
     setup();
     m_InputThread = std::thread(&Game::processInputLoop, this);
     m_GameThread = std::thread(&Game::gameLoop, this);
-    //LOCKING
+}
+
+void Game::shutDown()
+{
     m_GameThread.join();
     m_InputThread.join();
 }
@@ -52,11 +55,8 @@ void Game::processInputLoop()
                 m_IsAboutToQuit = true;
                 break; 
             }
-            if( key == (sf::Keyboard::Pause) ||
-                key == (sf::Keyboard::Space))
-            {
+            if( key == sf::Keyboard::Pause || key == sf::Keyboard::Space)
                 m_IsPaused = !m_IsPaused;
-            }
 
             if(!Game::isPaused())
             {

@@ -26,7 +26,7 @@ void Window::drawGame()
 {
     Game game;
     game.newDrawable = std::bind(&Window::addDrawable, this, std::placeholders::_1);
-    game.play(); //LOCKING
+    game.start();
 
     while(!game.isAboutToQuit())
     {
@@ -75,6 +75,7 @@ void Window::drawGame()
         m_Window.display();
     }
 
+    game.shutDown();
     m_Drawables.clear();
 }
 

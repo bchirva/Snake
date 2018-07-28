@@ -53,7 +53,8 @@ public:
 
     void receiveInput(sf::Keyboard::Key AKey);
 
-    void play();
+    void start();
+    void shutDown();
     std::function<void(std::shared_ptr<IDrawable>)> newDrawable;
 };
 
