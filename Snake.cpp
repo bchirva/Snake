@@ -21,26 +21,20 @@ void Snake::turn(EDirection ADirection)
     m_NextDirection = ADirection;
 }
 
-Point Snake::aboutToMove() 
+const Point &Snake::aboutToMove()
 {
     std::lock_guard<std::mutex> lock_dir(m_DirectionMutex);
     m_CurrentDirection = m_NextDirection;
     std::lock_guard<std::recursive_mutex> lock_line(m_PointsMutex);
     Point Head(m_Points.front());
     Head.move(m_CurrentDirection, 1);    
-    return Head;
-}
-
-void Snake::eat()
-{
-    std::lock_guard<std::recursive_mutex> lock(m_PointsMutex);
-    m_Points.push_front(aboutToMove());
+    m_Points.push_front(Head);
+    return m_Points.front();
 }
 
 void Snake::move()
 {
     std::lock_guard<std::recursive_mutex> lock(m_PointsMutex);
-    eat();
     m_Points.pop_back();
 }
 
@@ -99,3 +93,15 @@ void Snake::draw(sf::RenderWindow &ADrawingWindow) const
         ADrawingWindow.draw(sprite);
     }
 }
+
+bool Snake::isHitSelf() const
+{
+    auto head = m_Points.front();
+    for (auto p = ++m_Points.cbegin(); p != m_Points.cend(); ++p)
+    {
+        if(head.isHit(*p))
+            return true;
+    }
+    return false;
+}
+

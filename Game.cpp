@@ -122,27 +122,23 @@ void Game::expandWall()
 
 void Game::step()
 {
-    Point next = m_Snake->aboutToMove();
-    if(next.isHit(*m_Apple))
+    auto next = m_Snake->aboutToMove();
+    if(m_Snake->isHit(*m_Apple))
     {
-        m_Snake->eat();
-        m_Score++;
-
         relocateApple();
+
+        m_Score++;
         if(m_Score % 5 == 0)
-        {
             expandWall();
-        }
     }
     else
     {
-        if(m_Snake->isHit(next) || m_Snake->isHit(next))
+        m_Snake->move();
+        if(m_Snake->isHitSelf() || m_Wall->isHit(next))
         {
             newDrawable(std::make_unique<DeathSpot>(next));
             m_IsGameOver = true;
         }
-
-        m_Snake->move();
     }
 }
 

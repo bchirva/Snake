@@ -16,12 +16,12 @@ public:
     Snake(Point ABegin, EDirection ADirection);
     ~Snake() = default;
     
-    void turn(EDirection ADirection);
     void draw(sf::RenderWindow& ADrawingWindow) const override;
+    bool isHitSelf() const;
 
+    void turn(EDirection ADirection);
     void move();
-    void eat();
-    Point aboutToMove();
+    const Point& aboutToMove();
 };
 
 #endif
