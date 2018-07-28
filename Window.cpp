@@ -107,15 +107,15 @@ void Window::showMenu()
                 {
                 case sf::Keyboard::Up:
                 {
-                    int8_t pickItem = static_cast<int8_t>(m_CurrentMenuItem) + 1;
-                    if(pickItem > 3) pickItem = 0;
+                    int8_t pickItem = static_cast<int8_t>(m_CurrentMenuItem) - 1;
+                    if(pickItem < 0) pickItem = 3;
                     m_CurrentMenuItem = static_cast<EMenuItem>(pickItem);
                     break;
                 }
                 case sf::Keyboard::Down:
                 {
                     int8_t pickItem = static_cast<int8_t>(m_CurrentMenuItem) + 1;
-                    if(pickItem < 0) pickItem = 3;
+                    if(pickItem > 3) pickItem = 0;
                     m_CurrentMenuItem = static_cast<EMenuItem>(pickItem);
                     break;
                 }
