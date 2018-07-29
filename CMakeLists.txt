@@ -1,11 +1,15 @@
-cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
+cmake_minimum_required (VERSION 3.5.2 FATAL_ERROR)
 
-project(Snake)
+project (Snake)
 
-find_package(Threads REQUIRED)
-find_package(SFML COMPONENTS system graphics window REQUIRED)
+find_package (Threads REQUIRED)
+find_package (SFML COMPONENTS system graphics window REQUIRED)
 
-add_executable(Snake 
+set (Boost_USE_STATIC_LIBS ON)
+set (Boost_USE_MULTITHREADED ON)
+find_package (Boost COMPONENTS filesystem REQUIRED)
+
+add_executable (Snake
     main.cpp
     Game.cpp
     Window.cpp
@@ -16,15 +20,16 @@ add_executable(Snake
     Point.cpp
     TextureLoader.cpp
     DeathSpot.cpp
+    ControlHandler.cpp
     )
 
-set_property(TARGET Snake PROPERTY CXX_STANDARD 14)
+set_property (TARGET Snake PROPERTY CXX_STANDARD 14)
 
-if(NOT ${CMAKE_CURRENT_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_BINARY_DIR})
+if (NOT ${CMAKE_CURRENT_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_BINARY_DIR})
     file(COPY resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/)
 endif()
 
-if(MSVC)
+if (MSVC)
     target_compile_options(Snake PRIVATE /W4)
 else()
     target_compile_options(Snake
@@ -36,17 +41,19 @@ else()
         )
 endif()
 
-target_include_directories(Snake 
+target_include_directories (Snake
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
     )
 
-target_link_libraries(Snake
+target_link_libraries (Snake
     PRIVATE
         sfml-system
         sfml-graphics
         sfml-window
         Threads::Threads
+        Boost::filesystem
+        Boost::boost
     )
 
 if (CMAKE_GENERATOR STREQUAL "Unix Makefiles")

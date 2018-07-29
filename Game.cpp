@@ -50,23 +50,29 @@ void Game::processInputLoop()
             sf::Keyboard::Key key = m_InputQueue.front();
             m_InputQueue.pop();
              
-            if(key == (sf::Keyboard::Escape))
+            if( key == ControlHandler::getPrimaryKey(ControlHandler::Action::Quit) ||
+                key == ControlHandler::getSecondaryKey(ControlHandler::Action::Quit))
             {
                 m_IsAboutToQuit = true;
                 break; 
             }
-            if( key == sf::Keyboard::Pause || key == sf::Keyboard::Space)
+            if( key == ControlHandler::getPrimaryKey(ControlHandler::Action::Pause) ||
+                key == ControlHandler::getSecondaryKey(ControlHandler::Action::Pause))
                 m_IsPaused = !m_IsPaused;
 
             if(!Game::isPaused())
             {
-                if( key == sf::Keyboard::W || key == sf::Keyboard::Up)
-                    m_Snake->turn(EDirection::Top);
-                if( key == sf::Keyboard::S || key == sf::Keyboard::Down)
+                if( key == ControlHandler::getPrimaryKey(ControlHandler::Action::Up) ||
+                    key == ControlHandler::getSecondaryKey(ControlHandler::Action::Up))
+                    m_Snake->turn(EDirection::Up);
+                if( key == ControlHandler::getPrimaryKey(ControlHandler::Action::Down) ||
+                    key == ControlHandler::getSecondaryKey(ControlHandler::Action::Down))
                     m_Snake->turn(EDirection::Down);
-                if( key == sf::Keyboard::A || key == sf::Keyboard::Left)
+                if( key == ControlHandler::getPrimaryKey(ControlHandler::Action::Left) ||
+                    key == ControlHandler::getSecondaryKey(ControlHandler::Action::Left))
                     m_Snake->turn(EDirection::Left);
-                if( key == sf::Keyboard::D || key == sf::Keyboard::Right)
+                if( key == ControlHandler::getPrimaryKey(ControlHandler::Action::Right) ||
+                    key == ControlHandler::getSecondaryKey(ControlHandler::Action::Right))
                     m_Snake->turn(EDirection::Right);
             }
         }

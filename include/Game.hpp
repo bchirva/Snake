@@ -12,6 +12,7 @@
 #include "Wall.hpp"
 #include "Apple.hpp"
 #include "DeathSpot.hpp"
+#include "ControlHandler.hpp"
 
 class Game
 {

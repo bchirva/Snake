@@ -1,11 +1,8 @@
 #include "Window.hpp"
-#include "Game.hpp"
-
-#include <iostream>
 
 const std::map<Window::EMenuItem, std::string> Window::g_MenuItems = {
     {Window::EMenuItem::NewGame, "New Game"},
-    {Window::EMenuItem::Options, "Options"},
+    {Window::EMenuItem::Settings, "Settings"},
     {Window::EMenuItem::Records, "Records"},
     {Window::EMenuItem::Quit,    "Quit"}
 };
@@ -14,6 +11,7 @@ Window::Window()
 {
     m_CurrentMenuItem = EMenuItem::NewGame;
     TextureLoader::loadTextures();
+    ControlHandler::loadKeyMap();
     m_Font.loadFromFile("./resources/font/VeraMono.ttf");
 }
 
@@ -36,7 +34,7 @@ void Window::drawGame()
             if (event.type == sf::Event::KeyPressed)
                 game.receiveInput(event.key.code);
             else if (event.type == sf::Event::Closed)
-                game.receiveInput(sf::Keyboard::Escape);
+                game.receiveInput(ControlHandler::getPrimaryKey(ControlHandler::Action::Quit));
         }
 
         sf::RectangleShape field(sf::Vector2f(FIELD_SIZE * 16, FIELD_SIZE * 16));
@@ -79,7 +77,17 @@ void Window::drawGame()
     m_Drawables.clear();
 }
 
-void Window::showMenu()
+void Window::showRecords()
+{
+
+}
+
+void Window::showSettingsMenu()
+{
+
+}
+
+void Window::showMainMenu()
 {
     sf::Text label;
     label.setFont(m_Font);
@@ -128,9 +136,11 @@ void Window::showMenu()
                         case EMenuItem::NewGame:
                             drawGame();
                             break;
-                        case EMenuItem::Options: 
+                        case EMenuItem::Settings:
+                            showSettingsMenu();
                             break;
                         case EMenuItem::Records: 
+                            showRecords();
                             break;
                         case EMenuItem::Quit:
                             m_Window.close();
@@ -169,5 +179,5 @@ void Window::showMenu()
 void Window::open()
 {
     m_Window.create(sf::VideoMode(FIELD_SIZE * 16, (FIELD_SIZE * 16) + 24), "Snake", sf::Style::Titlebar | sf::Style::Close);
-    showMenu();
+    showMainMenu();
 }

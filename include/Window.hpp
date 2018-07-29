@@ -9,9 +9,11 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "Game.hpp"
 #include "Drawable.hpp"
 #include "Base.hpp"
 #include "TextureLoader.hpp"
+#include "ControlHandler.hpp"
 
 class Window
 {
@@ -19,7 +21,7 @@ private:
     enum class EMenuItem
     {
         NewGame,
-        Options,
+        Settings,
         Records,
         Quit
     };
@@ -34,7 +36,9 @@ private:
     void addDrawable(const std::shared_ptr<IDrawable>& ADrawable);
 
     void drawGame();
-    void showMenu();
+    void showRecords();
+    void showSettingsMenu();
+    void showMainMenu();
 
 public:
     Window();

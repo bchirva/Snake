@@ -10,7 +10,7 @@ void Point::move(EDirection ADirection, int8_t ADistance)
 {
     switch(ADirection)
     {
-        case EDirection::Top:
+        case EDirection::Up:
             m_Y -= ADistance;
             break;
         case EDirection::Down:

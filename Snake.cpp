@@ -12,8 +12,8 @@ void Snake::turn(EDirection ADirection)
     if(ADirection == m_NextDirection)
         return;
 
-    if ((ADirection == EDirection::Top      && m_CurrentDirection == EDirection::Down) ||
-        (ADirection == EDirection::Down   && m_CurrentDirection == EDirection::Top)    ||
+    if ((ADirection == EDirection::Up      && m_CurrentDirection == EDirection::Down) ||
+        (ADirection == EDirection::Down   && m_CurrentDirection == EDirection::Up)    ||
         (ADirection == EDirection::Left     && m_CurrentDirection == EDirection::Right)  ||
         (ADirection == EDirection::Right    && m_CurrentDirection == EDirection::Left))
         return;

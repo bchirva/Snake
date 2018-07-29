@@ -5,7 +5,7 @@
 
 enum class EDirection
 {
-    Top = 0,
+    Up = 0,
     Down,
     Left,
     Right
