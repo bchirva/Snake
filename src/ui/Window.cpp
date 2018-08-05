@@ -58,16 +58,20 @@ void Window::drawGame()
         scoreLabel.setString("Score: " + currentScore);
 
         if(game.isPaused())
-        {
             stateLabel.setString("PAUSED");
-            stateLabel.setPosition((FIELD_SIZE * 16 / 2) - stateLabel.getGlobalBounds().width / 2 , FIELD_SIZE * 16 + 4);
-        }
+        if(game.isGameOver())
+            stateLabel.setString("GAME OVER");
 
-        m_Window.draw(field);
+               m_Window.draw(field);
         m_Window.draw(footer);
 
         m_Window.draw(scoreLabel);
-        m_Window.draw(stateLabel);
+        if(!stateLabel.getString().isEmpty())
+        {
+            stateLabel.setPosition((FIELD_SIZE * 16 / 2) - stateLabel.getGlobalBounds().width / 2 , FIELD_SIZE * 16 + 4);
+            m_Window.draw(stateLabel);
+        }
+
         for(auto Drawable: m_Drawables)
             Drawable->draw(m_Window);
         m_Window.display();

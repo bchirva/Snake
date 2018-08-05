@@ -10,17 +10,17 @@ set (Boost_USE_MULTITHREADED ON)
 find_package (Boost COMPONENTS filesystem REQUIRED)
 
 add_executable (Snake
-    main.cpp
-    Game.cpp
-    Window.cpp
-    Snake.cpp
-    Wall.cpp
-    Line.cpp
-    Apple.cpp
-    Point.cpp
-    TextureLoader.cpp
-    DeathSpot.cpp
-    ControlHandler.cpp
+    src/main.cpp
+    src/ui/Window.cpp
+    src/game/Game.cpp
+    src/game/Snake.cpp
+    src/game/Wall.cpp
+    src/game/Line.cpp
+    src/game/Apple.cpp
+    src/game/Point.cpp
+    src/game/DeathSpot.cpp
+    src/common/TextureLoader.cpp
+    src/common/ControlHandler.cpp
     )
 
 set_property (TARGET Snake PROPERTY CXX_STANDARD 14)
@@ -43,7 +43,9 @@ endif()
 
 target_include_directories (Snake
     PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
+       ${CMAKE_CURRENT_SOURCE_DIR}/include/game
+       ${CMAKE_CURRENT_SOURCE_DIR}/include/ui
+       ${CMAKE_CURRENT_SOURCE_DIR}/include/common
     )
 
 target_link_libraries (Snake
