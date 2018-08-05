@@ -28,12 +28,15 @@ public:
 
     static sf::Keyboard::Key getPrimaryKey(ControlHandler::Action AAction);
     static sf::Keyboard::Key getSecondaryKey(ControlHandler::Action AAction);
+    static std::string getPrimaryKeyStr(ControlHandler::Action AAction);
+    static std::string getSecondaryKeyStr(ControlHandler::Action AAction);
 
 private:
     static std::map<ControlHandler::Action, sf::Keyboard::Key> g_PrimaryKeys;
     static std::map<ControlHandler::Action, sf::Keyboard::Key> g_SecondaryKeys;
 
     static void configureDefault();
+    static std::string getString(sf::Keyboard::Key AKey);
 };
 
 #endif // CONTROLHANDLER_HPP
