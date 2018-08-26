@@ -25,7 +25,7 @@ void Game::receiveInput(sf::Keyboard::Key AKey)
 
 void Game::gameLoop()
 {
-    while(!Game::isAboutToQuit())
+    while(!isAboutToQuit())
     {
         std::this_thread::sleep_for(g_Tick);
         if(!m_IsPaused && !m_IsGameOver)
@@ -42,37 +42,33 @@ void Game::gameLoop()
 
 void Game::processInputLoop()
 {
-    while(!Game::isAboutToQuit())
+    while(!isAboutToQuit())
     {
         std::lock_guard<std::mutex> lock(m_InputMutex);
         while(!m_InputQueue.empty())
         {
             sf::Keyboard::Key key = m_InputQueue.front();
             m_InputQueue.pop();
+
+            auto Handler = ControlHandler::getInstance();
              
-            if( key == ControlHandler::getPrimaryKey(ControlHandler::Action::Quit) ||
-                key == ControlHandler::getSecondaryKey(ControlHandler::Action::Quit))
+            if(key == Handler->getKey(ControlHandler::Action::Quit))
             {
                 m_IsAboutToQuit = true;
                 break; 
             }
-            if( key == ControlHandler::getPrimaryKey(ControlHandler::Action::Pause) ||
-                key == ControlHandler::getSecondaryKey(ControlHandler::Action::Pause))
+            if(key == Handler->getKey(ControlHandler::Action::Pause))
                 m_IsPaused = !m_IsPaused;
 
-            if(!Game::isPaused())
+            if(!isPaused())
             {
-                if( key == ControlHandler::getPrimaryKey(ControlHandler::Action::Up) ||
-                    key == ControlHandler::getSecondaryKey(ControlHandler::Action::Up))
+                if(key == Handler->getKey(ControlHandler::Action::Up))
                     m_Snake->turn(EDirection::Up);
-                if( key == ControlHandler::getPrimaryKey(ControlHandler::Action::Down) ||
-                    key == ControlHandler::getSecondaryKey(ControlHandler::Action::Down))
+                if(key == Handler->getKey(ControlHandler::Action::Down))
                     m_Snake->turn(EDirection::Down);
-                if( key == ControlHandler::getPrimaryKey(ControlHandler::Action::Left) ||
-                    key == ControlHandler::getSecondaryKey(ControlHandler::Action::Left))
+                if(key == Handler->getKey(ControlHandler::Action::Left))
                     m_Snake->turn(EDirection::Left);
-                if( key == ControlHandler::getPrimaryKey(ControlHandler::Action::Right) ||
-                    key == ControlHandler::getSecondaryKey(ControlHandler::Action::Right))
+                if(key == Handler->getKey(ControlHandler::Action::Right))
                     m_Snake->turn(EDirection::Right);
             }
         }

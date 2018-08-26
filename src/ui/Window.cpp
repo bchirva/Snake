@@ -1,18 +1,15 @@
 #include "Window.hpp"
 
 const std::map<Window::EMenuItem, std::string> Window::g_MenuItems = {
-    {Window::EMenuItem::NewGame, "New Game"},
-    {Window::EMenuItem::Settings, "Settings"},
-    {Window::EMenuItem::Records, "Records"},
-    {Window::EMenuItem::Quit,    "Quit"}
+    {Window::EMenuItem::NewGame,    "New Game"},
+    {Window::EMenuItem::Settings,   "Settings"},
+    {Window::EMenuItem::Records,    "Records"},
+    {Window::EMenuItem::Quit,       "Quit"}
 };
 
 Window::Window()
 {
     m_CurrentMenuItem = EMenuItem::NewGame;
-    TextureLoader::loadTextures();
-    ControlHandler::loadKeyMap();
-    m_Font.loadFromFile("./resources/font/VeraMono.ttf");
 }
 
 void Window::addDrawable(const std::shared_ptr<IDrawable>& ADrawable)
@@ -34,7 +31,7 @@ void Window::drawGame()
             if (event.type == sf::Event::KeyPressed)
                 game.receiveInput(event.key.code);
             else if (event.type == sf::Event::Closed)
-                game.receiveInput(ControlHandler::getPrimaryKey(ControlHandler::Action::Quit));
+                game.receiveInput(ControlHandler::getInstance()->getKey(ControlHandler::Action::Quit));
         }
 
         sf::RectangleShape field(sf::Vector2f(FIELD_SIZE * 16, FIELD_SIZE * 16));
@@ -44,13 +41,13 @@ void Window::drawGame()
         footer.setPosition(0, FIELD_SIZE * 16);
 
         sf::Text scoreLabel;
-        scoreLabel.setFont(m_Font);
+        scoreLabel.setFont(TextureLoader::getInstance()->getFont());
         scoreLabel.setPosition(8, FIELD_SIZE * 16 + 4);
         scoreLabel.setCharacterSize(16);
         scoreLabel.setFillColor(sf::Color(224, 224, 224));
 
         sf::Text stateLabel;
-        stateLabel.setFont(m_Font);
+        stateLabel.setFont(TextureLoader::getInstance()->getFont());
         stateLabel.setCharacterSize(16);
         stateLabel.setFillColor(sf::Color::Red);
 
@@ -62,7 +59,7 @@ void Window::drawGame()
         if(game.isGameOver())
             stateLabel.setString("GAME OVER");
 
-               m_Window.draw(field);
+        m_Window.draw(field);
         m_Window.draw(footer);
 
         m_Window.draw(scoreLabel);
@@ -94,7 +91,7 @@ void Window::showSettingsMenu()
 void Window::showMainMenu()
 {
     sf::Text label;
-    label.setFont(m_Font);
+    label.setFont(TextureLoader::getInstance()->getFont());
     label.setCharacterSize(24);
     sf::RectangleShape active;
     active.setFillColor(sf::Color::Green);

@@ -1,7 +1,7 @@
 #include "ControlHandler.hpp"
 
-std::map<ControlHandler::Action, sf::Keyboard::Key> ControlHandler::g_PrimaryKeys {};
-std::map<ControlHandler::Action, sf::Keyboard::Key> ControlHandler::g_SecondaryKeys {};
+std::shared_ptr<ControlHandler> ControlHandler::g_Instance = nullptr;
+std::mutex ControlHandler::g_InstanceMutex;
 
 void ControlHandler::loadKeyMap()
 {
@@ -13,23 +13,14 @@ void ControlHandler::loadKeyMap()
     boost::property_tree::ptree root;
     boost::property_tree::read_json("./resources/settings.json", root);
 
-    g_PrimaryKeys.clear();
-    g_SecondaryKeys.clear();
+    m_Keys.clear();
 
-    g_PrimaryKeys[Action::Up]    = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Up"));
-    g_PrimaryKeys[Action::Down]  = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Down"));
-    g_PrimaryKeys[Action::Left]  = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Left"));
-    g_PrimaryKeys[Action::Right] = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Right"));
-    g_PrimaryKeys[Action::Pause] = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Pause"));
-    g_PrimaryKeys[Action::Quit]  = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Quit"));
-
-    g_SecondaryKeys[Action::Up]    = static_cast<sf::Keyboard::Key>(root.get<int>("SecondaryKeys.Up"));
-    g_SecondaryKeys[Action::Down]  = static_cast<sf::Keyboard::Key>(root.get<int>("SecondaryKeys.Down"));
-    g_SecondaryKeys[Action::Left]  = static_cast<sf::Keyboard::Key>(root.get<int>("SecondaryKeys.Left"));
-    g_SecondaryKeys[Action::Right] = static_cast<sf::Keyboard::Key>(root.get<int>("SecondaryKeys.Right"));
-    g_SecondaryKeys[Action::Pause] = static_cast<sf::Keyboard::Key>(root.get<int>("SecondaryKeys.Pause"));
-    g_SecondaryKeys[Action::Quit]  = static_cast<sf::Keyboard::Key>(root.get<int>("SecondaryKeys.Quit"));
-
+    m_Keys[Action::Up]    = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Up"));
+    m_Keys[Action::Down]  = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Down"));
+    m_Keys[Action::Left]  = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Left"));
+    m_Keys[Action::Right] = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Right"));
+    m_Keys[Action::Pause] = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Pause"));
+    m_Keys[Action::Quit]  = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Quit"));
 }
 
 void ControlHandler::saveKeyMap()
@@ -37,57 +28,43 @@ void ControlHandler::saveKeyMap()
 
 }
 
-sf::Keyboard::Key ControlHandler::getPrimaryKey(ControlHandler::Action AAction)
+std::shared_ptr<ControlHandler> ControlHandler::getInstance()
 {
-    auto record = g_PrimaryKeys.find(AAction);
-    if (record != g_PrimaryKeys.cend())
+    if(!g_Instance)
+    {
+        std::lock_guard<std::mutex> lock(g_InstanceMutex);
+        if(!g_Instance)
+        {
+            g_Instance.reset(new ControlHandler());
+            g_Instance->loadKeyMap();
+        }
+    }
+    return g_Instance;
+}
+
+sf::Keyboard::Key ControlHandler::getKey(ControlHandler::Action AAction)
+{
+    auto record = m_Keys.find(AAction);
+    if (record != m_Keys.cend())
         return record->second;
     else
         return sf::Keyboard::Unknown;
 }
 
-sf::Keyboard::Key ControlHandler::getSecondaryKey(ControlHandler::Action AAction)
+std::string ControlHandler::getKeyStr(ControlHandler::Action AAction)
 {
-    auto record = g_SecondaryKeys.find(AAction);
-    if (record != g_PrimaryKeys.cend())
-        return record->second;
-    else
-        return sf::Keyboard::Unknown;
-}
-
-std::string ControlHandler::getPrimaryKeyStr(ControlHandler::Action AAction)
-{
-    return getString(getPrimaryKey(AAction));
-}
-
-std::string ControlHandler::getSecondaryKeyStr(ControlHandler::Action AAction)
-{
-    return getString(getSecondaryKey(AAction));
+    return getString(getKey(AAction));
 }
 
 void ControlHandler::configureDefault()
 {
-    g_PrimaryKeys.clear();
-    g_SecondaryKeys.clear();
-
-    g_PrimaryKeys[Action::Up]       = sf::Keyboard::W;
-    g_SecondaryKeys[Action::Up]     = sf::Keyboard::Up;
-
-    g_PrimaryKeys[Action::Down]     = sf::Keyboard::S;
-    g_SecondaryKeys[Action::Down]   = sf::Keyboard::Down;
-
-    g_PrimaryKeys[Action::Left]     = sf::Keyboard::A;
-    g_SecondaryKeys[Action::Left]   = sf::Keyboard::Left;
-
-    g_PrimaryKeys[Action::Right]    = sf::Keyboard::D;
-    g_SecondaryKeys[Action::Right]  = sf::Keyboard::Right;
-
-    g_PrimaryKeys[Action::Pause]    = sf::Keyboard::Space;
-    g_SecondaryKeys[Action::Pause]  = sf::Keyboard::P;
-
-    g_PrimaryKeys[Action::Quit]     = sf::Keyboard::Escape;
-    g_SecondaryKeys[Action::Quit]   = sf::Keyboard::Q;
-
+    m_Keys.clear();
+    m_Keys[Action::Up]       = sf::Keyboard::W;
+    m_Keys[Action::Down]     = sf::Keyboard::S;
+    m_Keys[Action::Left]     = sf::Keyboard::A;
+    m_Keys[Action::Right]    = sf::Keyboard::D;
+    m_Keys[Action::Pause]    = sf::Keyboard::Space;
+    m_Keys[Action::Quit]     = sf::Keyboard::Escape;
     saveKeyMap();
 }
 

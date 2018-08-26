@@ -2,6 +2,9 @@
 #define CONTROLHANDLER_HPP
 
 #include <map>
+#include <memory>
+#include <mutex>
+
 #include <SFML/Window/Keyboard.hpp>
 
 #include <boost/filesystem.hpp>
@@ -20,23 +23,20 @@ public:
         Quit
     };
 
-    ControlHandler() = delete;
-    ~ControlHandler() = delete;
-
-    static void loadKeyMap();
-    static void saveKeyMap();
-
-    static sf::Keyboard::Key getPrimaryKey(ControlHandler::Action AAction);
-    static sf::Keyboard::Key getSecondaryKey(ControlHandler::Action AAction);
-    static std::string getPrimaryKeyStr(ControlHandler::Action AAction);
-    static std::string getSecondaryKeyStr(ControlHandler::Action AAction);
+    static std::shared_ptr<ControlHandler> getInstance();
+    sf::Keyboard::Key getKey(ControlHandler::Action AAction);
+    std::string getKeyStr(ControlHandler::Action AAction);
+    void loadKeyMap();
+    void saveKeyMap();
 
 private:
-    static std::map<ControlHandler::Action, sf::Keyboard::Key> g_PrimaryKeys;
-    static std::map<ControlHandler::Action, sf::Keyboard::Key> g_SecondaryKeys;
+    std::map<ControlHandler::Action, sf::Keyboard::Key> m_Keys {};
+    static std::shared_ptr<ControlHandler> g_Instance;
+    static std::mutex g_InstanceMutex;
 
-    static void configureDefault();
-    static std::string getString(sf::Keyboard::Key AKey);
+    ControlHandler() = default;
+    void configureDefault();
+    std::string getString(sf::Keyboard::Key AKey);
 };
 
 #endif // CONTROLHANDLER_HPP

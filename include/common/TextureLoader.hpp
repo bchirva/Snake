@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <map>
+#include <memory>
+#include <mutex>
 
 enum class ESprite
 {
@@ -22,14 +24,21 @@ enum class ESprite
 
 class TextureLoader
 {
-private:
-    static std::map<ESprite, sf::Texture> g_Sprites;
 public:
-    TextureLoader() = delete;
-    ~TextureLoader() = delete;
+    static std::shared_ptr<TextureLoader> getInstance();
+    const sf::Texture& getTexture(ESprite ARequestedSprite) const;
+    const sf::Font& getFont() const;
 
-    static bool loadTextures();
-    static const sf::Texture& getTexture(ESprite ARequestedSprite);
+private:
+    static std::mutex g_InstanceMutex;
+    static std::shared_ptr<TextureLoader> g_Instance;
+
+    std::map<ESprite, sf::Texture> m_Sprites {};
+    sf::Font m_Font;
+
+    TextureLoader() = default;
+    bool loadTextures();
+    bool loadFont();
 };
 
 #endif

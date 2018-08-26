@@ -30,7 +30,6 @@ private:
     EMenuItem m_CurrentMenuItem;
 
     sf::RenderWindow m_Window;
-    sf::Font m_Font;
 
     std::vector<std::shared_ptr<IDrawable>> m_Drawables;
     void addDrawable(const std::shared_ptr<IDrawable>& ADrawable);

@@ -25,7 +25,7 @@ void Wall::draw(sf::RenderWindow& ADrawingWindow) const
         else if (!isLeft && isRight && !isTop && isBottom)      TargetTexture = ESprite::BottomRightCorner;
         else /*if (isLeft && isRight && isTop && isBottom)*/    TargetTexture = ESprite::LineCross;
 
-        texture = TextureLoader::getTexture(TargetTexture);
+        texture = TextureLoader::getInstance()->getTexture(TargetTexture);
         sprite.setTexture(texture);
         sprite.setColor(sf::Color(128, 128, 128));
         sprite.setPosition(point.getX() * 16, point.getY() * 16);
