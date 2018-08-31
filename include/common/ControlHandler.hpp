@@ -7,9 +7,6 @@
 
 #include <SFML/Window/Keyboard.hpp>
 
-#include <boost/filesystem.hpp>
-#include <boost/property_tree/json_parser.hpp>
-
 class ControlHandler
 {
 public:

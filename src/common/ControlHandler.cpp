@@ -5,22 +5,22 @@ std::mutex ControlHandler::g_InstanceMutex;
 
 void ControlHandler::loadKeyMap()
 {
-    if (!boost::filesystem::exists("./resources/settings.json"))
-    {
-        configureDefault();
-        return;
-    }
-    boost::property_tree::ptree root;
-    boost::property_tree::read_json("./resources/settings.json", root);
+    //if (!boost::filesystem::exists("./resources/settings.json"))
+    //{
+        //configureDefault();
+        //return;
+    //}
+    //boost::property_tree::ptree root;
+    //boost::property_tree::read_json("./resources/settings.json", root);
 
-    m_Keys.clear();
+    //m_Keys.clear();
 
-    m_Keys[Action::Up]    = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Up"));
-    m_Keys[Action::Down]  = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Down"));
-    m_Keys[Action::Left]  = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Left"));
-    m_Keys[Action::Right] = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Right"));
-    m_Keys[Action::Pause] = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Pause"));
-    m_Keys[Action::Quit]  = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Quit"));
+    //m_Keys[Action::Up]    = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Up"));
+    //m_Keys[Action::Down]  = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Down"));
+    //m_Keys[Action::Left]  = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Left"));
+    //m_Keys[Action::Right] = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Right"));
+    //m_Keys[Action::Pause] = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Pause"));
+    //m_Keys[Action::Quit]  = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Quit"));
 }
 
 void ControlHandler::saveKeyMap()

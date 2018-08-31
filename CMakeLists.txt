@@ -5,10 +5,6 @@ project (Snake)
 find_package (Threads REQUIRED)
 find_package (SFML COMPONENTS system graphics window REQUIRED)
 
-set (Boost_USE_STATIC_LIBS ON)
-set (Boost_USE_MULTITHREADED ON)
-find_package (Boost COMPONENTS filesystem REQUIRED)
-
 add_executable (Snake
     src/main.cpp
     src/ui/Window.cpp
@@ -54,8 +50,6 @@ target_link_libraries (Snake
         sfml-graphics
         sfml-window
         Threads::Threads
-        Boost::filesystem
-        Boost::boost
     )
 
 if (CMAKE_GENERATOR STREQUAL "Unix Makefiles")
