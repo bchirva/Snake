@@ -17,6 +17,7 @@ add_executable (Snake
     src/game/DeathSpot.cpp
     src/common/TextureLoader.cpp
     src/common/ControlHandler.cpp
+    src/common/FileDataAgent.cpp
     )
 
 set_property (TARGET Snake PROPERTY CXX_STANDARD 14)
