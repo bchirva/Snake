@@ -13,8 +13,9 @@
 #include "Apple.hpp"
 #include "DeathSpot.hpp"
 #include "ControlHandler.hpp"
+#include "InputProcessor.hpp"
 
-class Game
+class Game : public IInputProcessor
 {
 private:
     std::shared_ptr<Snake> m_Snake = nullptr;
@@ -52,7 +53,7 @@ public:
     bool isAboutToQuit() const;
     uint16_t getScore() const;
 
-    void receiveInput(sf::Keyboard::Key AKey);
+    void processEvent(const sf::Keyboard::Key& AKey) override;
 
     void start();
     void shutDown();

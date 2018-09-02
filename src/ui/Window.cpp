@@ -28,10 +28,8 @@ void Window::drawGame()
         sf::Event event;
         while (m_Window.pollEvent(event))
         {
-            if (event.type == sf::Event::KeyPressed)
-                game.receiveInput(event.key.code);
-            else if (event.type == sf::Event::Closed)
-                game.receiveInput(ControlHandler::getInstance()->getKey(ControlHandler::Action::Quit));
+            //if (event.type == sf::Event::Closed) break;
+            game.processEvent(event);
         }
 
         sf::RectangleShape field(sf::Vector2f(FIELD_SIZE * 16, FIELD_SIZE * 16));
@@ -91,8 +89,10 @@ void Window::showSettingsMenu()
 void Window::showMainMenu()
 {
     sf::Text label;
-    label.setFont(TextureLoader::getInstance()->getFont());
+    /*label.setFont(TextureLoader::getInstance()->getFont());
     label.setCharacterSize(24);
+    label.setFillColor(sf::Color::Green);
+    
     sf::RectangleShape active;
     active.setFillColor(sf::Color::Green);
     active.setOutlineThickness(2.0);
@@ -159,7 +159,6 @@ void Window::showMainMenu()
         m_Window.draw(field);
         for(auto item: g_MenuItems)
         {        
-            label.setFillColor(sf::Color::Green);
             label.setString(item.second);
             label.setPosition((m_Window.getSize().x - label.getLocalBounds().width) / 2, top);
             if(m_CurrentMenuItem == item.first)
@@ -174,7 +173,13 @@ void Window::showMainMenu()
             top += 40;
         }
         m_Window.display();
-    }
+    }*/
+    Menu MainMenu ({{"New Game", std::bind(&Window::drawGame, this)},
+                   {"Settings", std::bind(&Window::showSettingsMenu, this)},
+                   {"Records", std::bind(&Window::showRecords, this)},
+                   {"Quit", [this](){m_Window.close();}}
+                   });
+    MainMenu.draw(m_Window);
 }
 
 void Window::open()

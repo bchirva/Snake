@@ -14,6 +14,7 @@
 #include "Base.hpp"
 #include "TextureLoader.hpp"
 #include "ControlHandler.hpp"
+#include "Menu.hpp"
 
 class Window
 {

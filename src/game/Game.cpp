@@ -13,11 +13,13 @@ void Game::start()
 
 void Game::shutDown()
 {
+    if (!isAboutToQuit())
+        m_IsAboutToQuit = true;
     m_GameThread.join();
     m_InputThread.join();
 }
 
-void Game::receiveInput(sf::Keyboard::Key AKey)
+void Game::processEvent(const sf::Keyboard::Key& AKey)
 {
     std::lock_guard<std::mutex> lock(m_InputMutex);
     m_InputQueue.push(AKey);
@@ -42,6 +44,7 @@ void Game::gameLoop()
 
 void Game::processInputLoop()
 {
+    auto Handler = ControlHandler::getInstance();
     while(!isAboutToQuit())
     {
         std::lock_guard<std::mutex> lock(m_InputMutex);
@@ -50,12 +53,10 @@ void Game::processInputLoop()
             sf::Keyboard::Key key = m_InputQueue.front();
             m_InputQueue.pop();
 
-            auto Handler = ControlHandler::getInstance();
-             
             if(key == Handler->getKey(ControlHandler::Action::Quit))
             {
                 m_IsAboutToQuit = true;
-                break; 
+                break;
             }
             if(key == Handler->getKey(ControlHandler::Action::Pause))
                 m_IsPaused = !m_IsPaused;
