@@ -19,17 +19,6 @@
 class Window
 {
 private:
-    enum class EMenuItem
-    {
-        NewGame,
-        Settings,
-        Records,
-        Quit
-    };
-
-    static const std::map<EMenuItem, std::string> g_MenuItems; 
-    EMenuItem m_CurrentMenuItem;
-
     sf::RenderWindow m_Window;
 
     std::vector<std::shared_ptr<IDrawable>> m_Drawables;

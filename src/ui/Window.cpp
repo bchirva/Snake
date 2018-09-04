@@ -1,15 +1,7 @@
 #include "Window.hpp"
 
-const std::map<Window::EMenuItem, std::string> Window::g_MenuItems = {
-    {Window::EMenuItem::NewGame,    "New Game"},
-    {Window::EMenuItem::Settings,   "Settings"},
-    {Window::EMenuItem::Records,    "Records"},
-    {Window::EMenuItem::Quit,       "Quit"}
-};
-
 Window::Window()
 {
-    m_CurrentMenuItem = EMenuItem::NewGame;
 }
 
 void Window::addDrawable(const std::shared_ptr<IDrawable>& ADrawable)
@@ -29,7 +21,8 @@ void Window::drawGame()
         while (m_Window.pollEvent(event))
         {
             //if (event.type == sf::Event::Closed) break;
-            game.processEvent(event);
+            if (event.type == sf::Event::KeyPressed)
+                game.processEvent(event.key.code);
         }
 
         sf::RectangleShape field(sf::Vector2f(FIELD_SIZE * 16, FIELD_SIZE * 16));
@@ -89,101 +82,40 @@ void Window::showSettingsMenu()
 void Window::showMainMenu()
 {
     sf::Text label;
-    /*label.setFont(TextureLoader::getInstance()->getFont());
-    label.setCharacterSize(24);
-    label.setFillColor(sf::Color::Green);
-    
-    sf::RectangleShape active;
-    active.setFillColor(sf::Color::Green);
-    active.setOutlineThickness(2.0);
-    active.setOutlineColor(sf::Color::Black);
-
-    sf::RectangleShape field(sf::Vector2f(m_Window.getSize().x, m_Window.getSize().y));
-    field.setFillColor(sf::Color(160, 160, 0));
-    
-    while(m_Window.isOpen())
-    {
-        sf::Event event;
-        while (m_Window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-            {
-                m_Window.close();
-            }
-            if (event.type == sf::Event::KeyPressed)
-            {
-                switch (event.key.code)
-                {
-                case sf::Keyboard::Up:
-                {
-                    int8_t pickItem = static_cast<int8_t>(m_CurrentMenuItem) - 1;
-                    if(pickItem < 0) pickItem = 3;
-                    m_CurrentMenuItem = static_cast<EMenuItem>(pickItem);
-                    break;
-                }
-                case sf::Keyboard::Down:
-                {
-                    int8_t pickItem = static_cast<int8_t>(m_CurrentMenuItem) + 1;
-                    if(pickItem > 3) pickItem = 0;
-                    m_CurrentMenuItem = static_cast<EMenuItem>(pickItem);
-                    break;
-                }
-                case sf::Keyboard::Escape:
-                    m_Window.close();
-                    break;
-                case sf::Keyboard::Enter:
-                    switch(m_CurrentMenuItem)
-                    {
-                        case EMenuItem::NewGame:
-                            drawGame();
-                            break;
-                        case EMenuItem::Settings:
-                            showSettingsMenu();
-                            break;
-                        case EMenuItem::Records: 
-                            showRecords();
-                            break;
-                        case EMenuItem::Quit:
-                            m_Window.close();
-                            break;
-                    }
-                    break;
-                default: break;
-                }
-            }
-        }
-
-        int top = (m_Window.getSize().y - 136) / 2;
-        
-        m_Window.clear();
-        m_Window.draw(field);
-        for(auto item: g_MenuItems)
-        {        
-            label.setString(item.second);
-            label.setPosition((m_Window.getSize().x - label.getLocalBounds().width) / 2, top);
-            if(m_CurrentMenuItem == item.first)
-            {
-                active.setPosition(label.getPosition());
-                active.move(-8.0, .0);
-                active.setSize(sf::Vector2f(label.getLocalBounds().width + 16, label.getLocalBounds().height + 8));
-                m_Window.draw(active);
-                label.setFillColor(sf::Color::Black);
-            }
-            m_Window.draw(label);
-            top += 40;
-        }
-        m_Window.display();
-    }*/
     Menu MainMenu ({{"New Game", std::bind(&Window::drawGame, this)},
                    {"Settings", std::bind(&Window::showSettingsMenu, this)},
                    {"Records", std::bind(&Window::showRecords, this)},
                    {"Quit", [this](){m_Window.close();}}
                    });
-    MainMenu.draw(m_Window);
+
+    sf::RectangleShape field(sf::Vector2f(FIELD_SIZE * 16, FIELD_SIZE * 16));
+    field.setFillColor(sf::Color(160, 160, 0));
+    sf::RectangleShape footer(sf::Vector2f(FIELD_SIZE * 16, 24));
+    footer.setFillColor(sf::Color(32, 32, 32));
+    footer.setPosition(0, FIELD_SIZE * 16);
+
+    while (m_Window.isOpen())
+    {
+        sf::Event event;
+        while (m_Window.pollEvent(event))
+        {
+            //if (event.type == sf::Event::Closed) break;
+            if (event.type == sf::Event::KeyPressed)
+                MainMenu.processEvent(event.key.code);
+        }
+
+        m_Window.clear();
+        m_Window.draw(field);
+        m_Window.draw(footer);
+        MainMenu.draw(m_Window);
+        m_Window.display();
+    }
 }
 
 void Window::open()
 {
-    m_Window.create(sf::VideoMode(FIELD_SIZE * 16, (FIELD_SIZE * 16) + 24), "Snake", sf::Style::Titlebar | sf::Style::Close);
+    m_Window.create(sf::VideoMode(FIELD_SIZE * 16, (FIELD_SIZE * 16) + 24),
+                    "Snake",
+                    sf::Style::Titlebar | sf::Style::Close);
     showMainMenu();
 }

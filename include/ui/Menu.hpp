@@ -38,7 +38,7 @@ public:
     decltype(m_Items.begin()) getCurrent() const;
 
     void draw(sf::RenderWindow& ADrawingWindow) const override;
-    void processEvent(const sf::Keyboard::Key& AKey) override;
+    void processEvent(sf::Keyboard::Key AKey) override;
 };
 
 #endif

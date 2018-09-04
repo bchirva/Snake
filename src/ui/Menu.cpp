@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Menu.hpp"
 
 MenuItem::MenuItem(std::string&& ALabel, std::function<void()> AAction)
@@ -22,7 +23,7 @@ void MenuItem::action()
 
 bool MenuItem::isActive() const
 {
-    return (m_Action != nullptr);
+    return !(m_Action == nullptr);
 }
 
 void Menu::next()
@@ -30,12 +31,12 @@ void Menu::next()
     auto nextItem = m_CurrentItem;
     do
     {
-        if (nextItem == --m_Items.end())
-            nextItem = m_Items.cbegin();
+        if (nextItem == --m_Items.cend())
+            nextItem = m_Items.begin();
         else
             ++nextItem;
     }
-    while (nextItem->isActive() || nextItem == m_CurrentItem);
+    while (!nextItem->isActive() || nextItem == m_CurrentItem);
     m_CurrentItem = nextItem;
 }
 
@@ -45,11 +46,11 @@ void Menu::prev()
     do
     {
         if (prevItem == m_Items.begin())
-            prevItem = --m_Items.cend();
+            prevItem = --m_Items.end();
         else
             --prevItem;
     }
-    while (prevItem->isActive() || prevItem == m_CurrentItem);
+    while (!prevItem->isActive() || prevItem == m_CurrentItem);
     m_CurrentItem = prevItem;
 }
 
@@ -69,14 +70,9 @@ void Menu::draw(sf::RenderWindow& ADrawingWindow) const
     active.setOutlineThickness(2.0);
     active.setOutlineColor(sf::Color::Black);
 
-    sf::RectangleShape field(sf::Vector2f(ADrawingWindow.getSize().x, ADrawingWindow.getSize().y));
-    field.setFillColor(sf::Color(160, 160, 0));
-
-    while (m_IsActive)
-    {
-        ADrawingWindow.clear();
-        ADrawingWindow.draw(field);
-        uint32_t top = ADrawingWindow.getSize().y - m_Items.size() * MenuItem::ITEM_HEIGHT / 2;
+//    while (m_IsActive)
+//    {
+        uint32_t top = (ADrawingWindow.getSize().y - m_Items.size() * MenuItem::ITEM_HEIGHT) / 2;
 
         for (auto item = m_Items.cbegin(); item != m_Items.cend(); ++item)
         {
@@ -100,21 +96,21 @@ void Menu::draw(sf::RenderWindow& ADrawingWindow) const
             ADrawingWindow.draw(label);
             top += MenuItem::ITEM_HEIGHT;
         }
-    }
+//    }
 }
 
-void Menu::processEvent(const sf::Keyboard::Key& AKey)
+void Menu::processEvent(sf::Keyboard::Key AKey)
 {
     switch (AKey)
     {
     case sf::Keyboard::Up:
     {
-        next();
+        prev();
         break;
     }
     case sf::Keyboard::Down:
     {
-        prev();
+        next();
         break;
     }
     case sf::Keyboard::Escape:

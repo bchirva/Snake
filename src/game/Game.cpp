@@ -15,11 +15,14 @@ void Game::shutDown()
 {
     if (!isAboutToQuit())
         m_IsAboutToQuit = true;
-    m_GameThread.join();
-    m_InputThread.join();
+
+    if (m_GameThread.joinable())
+        m_GameThread.join();
+    if (m_InputThread.joinable())
+        m_InputThread.join();
 }
 
-void Game::processEvent(const sf::Keyboard::Key& AKey)
+void Game::processEvent(sf::Keyboard::Key AKey)
 {
     std::lock_guard<std::mutex> lock(m_InputMutex);
     m_InputQueue.push(AKey);

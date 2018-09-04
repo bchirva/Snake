@@ -7,7 +7,7 @@ class IInputProcessor
 {
 public:
     virtual ~IInputProcessor() = default;
-    virtual void processEvent(const sf::Keyboard::Key& AKey) = 0;
+    virtual void processEvent(sf::Keyboard::Key AKey) = 0;
 };
 
 #endif

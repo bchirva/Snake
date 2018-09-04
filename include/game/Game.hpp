@@ -53,7 +53,7 @@ public:
     bool isAboutToQuit() const;
     uint16_t getScore() const;
 
-    void processEvent(const sf::Keyboard::Key& AKey) override;
+    void processEvent(sf::Keyboard::Key AKey) override;
 
     void start();
     void shutDown();

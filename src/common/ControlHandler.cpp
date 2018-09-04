@@ -5,6 +5,7 @@ std::mutex ControlHandler::g_InstanceMutex;
 
 void ControlHandler::loadKeyMap()
 {
+    configureDefault();
     //if (!boost::filesystem::exists("./resources/settings.json"))
     //{
         //configureDefault();
