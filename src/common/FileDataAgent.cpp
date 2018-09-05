@@ -1,5 +1,5 @@
 #include "FileDataAgent.hpp"
-
+#include <iostream>
 void FileDataAgent::write(const std::string &AFileName, const std::map<std::string, int>& AData)
 {
     std::ofstream WriteStream (AFileName);
@@ -10,6 +10,10 @@ void FileDataAgent::write(const std::string &AFileName, const std::map<std::stri
             WriteStream << item.first << "=" << item.second << '\n';
         }
         WriteStream.close();
+    }
+    else
+    {
+        std::cout << "write error\n";
     }
 }
 
@@ -27,7 +31,11 @@ std::map<std::string, int> FileDataAgent::read(const std::string &AFileName)
             FileContent[buff.substr(0, delim)] = std::stoi(buff.substr(delim + 1));
             buff.clear();
         }
+        ReadStream.close();
     }
-    ReadStream.close();
+    else
+    {
+        std::cout << "read error\n";
+    }
     return FileContent;
 }

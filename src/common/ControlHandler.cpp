@@ -1,32 +1,44 @@
 #include "ControlHandler.hpp"
+#include <iostream>
 
 std::shared_ptr<ControlHandler> ControlHandler::g_Instance = nullptr;
 std::mutex ControlHandler::g_InstanceMutex;
 
 void ControlHandler::loadKeyMap()
 {
-    configureDefault();
-    //if (!boost::filesystem::exists("./resources/settings.json"))
-    //{
-        //configureDefault();
-        //return;
-    //}
-    //boost::property_tree::ptree root;
-    //boost::property_tree::read_json("./resources/settings.json", root);
+    FileDataAgent file;
+    auto content = file.read("./settings.conf");
 
-    //m_Keys.clear();
-
-    //m_Keys[Action::Up]    = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Up"));
-    //m_Keys[Action::Down]  = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Down"));
-    //m_Keys[Action::Left]  = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Left"));
-    //m_Keys[Action::Right] = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Right"));
-    //m_Keys[Action::Pause] = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Pause"));
-    //m_Keys[Action::Quit]  = static_cast<sf::Keyboard::Key>(root.get<int>("PrimaryKeys.Quit"));
+    if (content.empty())
+    {
+        std::cout << "configureDefault() & saveKeyMap()\n";
+        configureDefault();
+        saveKeyMap();
+    }
+    else
+    {
+        std::cout << "read from file\n";
+        m_Keys.clear();
+        m_Keys[Action::Up]      = static_cast<sf::Keyboard::Key>(content.at("Up"));
+        m_Keys[Action::Down]    = static_cast<sf::Keyboard::Key>(content.at("Down"));
+        m_Keys[Action::Left]    = static_cast<sf::Keyboard::Key>(content.at("Left"));
+        m_Keys[Action::Right]   = static_cast<sf::Keyboard::Key>(content.at("Right"));
+        m_Keys[Action::Pause]   = static_cast<sf::Keyboard::Key>(content.at("Pause"));
+        m_Keys[Action::Quit]    = static_cast<sf::Keyboard::Key>(content.at("Quit"));
+    }
 }
 
 void ControlHandler::saveKeyMap()
 {
-
+    std::map<std::string, int> keyMap;
+    keyMap["Up"]    = static_cast<int>(m_Keys.at(Action::Up));
+    keyMap["Down"]  = static_cast<int>(m_Keys.at(Action::Down));
+    keyMap["Left"]  = static_cast<int>(m_Keys.at(Action::Left));
+    keyMap["Right"] = static_cast<int>(m_Keys.at(Action::Right));
+    keyMap["Pause"] = static_cast<int>(m_Keys.at(Action::Pause));
+    keyMap["Quit"]  = static_cast<int>(m_Keys.at(Action::Quit));
+    FileDataAgent file;
+    file.write("./setting.conf", keyMap);
 }
 
 std::shared_ptr<ControlHandler> ControlHandler::getInstance()
