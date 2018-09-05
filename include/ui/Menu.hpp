@@ -5,8 +5,7 @@
 #include <string>
 #include <list>
 
-#include "InputProcessor.hpp"
-#include "Drawable.hpp"
+#include "Scene.hpp"
 
 class MenuItem
 {
@@ -23,12 +22,15 @@ public:
     static constexpr uint8_t ITEM_HEIGHT = 32;
 };
 
-class Menu : public IDrawable, public IInputProcessor
+class Menu : public Scene
 {
 private:
     std::list<MenuItem> m_Items;
     decltype(m_Items.begin()) m_CurrentItem;
     bool m_IsActive = true;
+
+    void draw(sf::RenderWindow& ADrawingWindow) const override;
+    void processInput(sf::Keyboard::Key AKey) override;
 public:
     Menu() = default;
     Menu(std::list<MenuItem>&& AList);
@@ -36,9 +38,6 @@ public:
     void next();
     void prev();
     decltype(m_Items.begin()) getCurrent() const;
-
-    void draw(sf::RenderWindow& ADrawingWindow) const override;
-    void processEvent(sf::Keyboard::Key AKey) override;
 };
 
 #endif

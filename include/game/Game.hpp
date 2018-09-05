@@ -13,9 +13,9 @@
 #include "Apple.hpp"
 #include "DeathSpot.hpp"
 #include "ControlHandler.hpp"
-#include "InputProcessor.hpp"
+#include "Scene.hpp"
 
-class Game : public IInputProcessor
+class Game : public Scene
 {
 private:
     std::shared_ptr<Snake> m_Snake = nullptr;
@@ -39,21 +39,21 @@ private:
     void processInputLoop();
     void gameLoop();
 
-    inline void setup();
     inline void step();
     inline void relocateApple();
     inline void expandWall();
 
+    void processInput(sf::Keyboard::Key AKey) override;
+    void draw(sf::RenderWindow& ATargetWindow) const override;
+
 public:
-    Game() = default;
+    Game();
     ~Game() = default;
 
     bool isGameOver() const;
     bool isPaused() const;
     bool isAboutToQuit() const;
     uint16_t getScore() const;
-
-    void processEvent(sf::Keyboard::Key AKey) override;
 
     void start();
     void shutDown();

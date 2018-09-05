@@ -8,6 +8,7 @@ find_package (SFML COMPONENTS system graphics window REQUIRED)
 add_executable (Snake
     src/main.cpp
     src/ui/Window.cpp
+    src/ui/Scene.cpp
     src/ui/Menu.cpp
     src/game/Game.cpp
     src/game/Snake.cpp

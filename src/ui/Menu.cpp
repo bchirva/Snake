@@ -96,10 +96,10 @@ void Menu::draw(sf::RenderWindow& ADrawingWindow) const
             ADrawingWindow.draw(label);
             top += MenuItem::ITEM_HEIGHT;
         }
-//    }
+        //    }
 }
 
-void Menu::processEvent(sf::Keyboard::Key AKey)
+void Menu::processInput(sf::Keyboard::Key AKey)
 {
     switch (AKey)
     {

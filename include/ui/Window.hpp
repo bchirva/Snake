@@ -21,9 +21,6 @@ class Window
 private:
     sf::RenderWindow m_Window;
 
-    std::vector<std::shared_ptr<IDrawable>> m_Drawables;
-    void addDrawable(const std::shared_ptr<IDrawable>& ADrawable);
-
     void drawGame();
     void showRecords();
     void showSettingsMenu();

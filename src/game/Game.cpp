@@ -4,9 +4,21 @@ constexpr std::chrono::milliseconds Game::g_Tick;
 
 using namespace std::chrono_literals;
 
+Game::Game()
+{
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int8_t> range(0, FIELD_SIZE - 1);
+
+    m_Apple = std::make_shared<Apple>();
+    m_Wall = std::make_shared<Wall>();
+    m_Snake = std::make_shared<Snake>(Point(range(gen), range(gen)), static_cast<EDirection>(range(gen) % 4));
+
+    relocateApple();
+}
+
 void Game::start()
 {    
-    setup();
     m_InputThread = std::thread(&Game::processInputLoop, this);
     m_GameThread = std::thread(&Game::gameLoop, this);
 }
@@ -20,12 +32,6 @@ void Game::shutDown()
         m_GameThread.join();
     if (m_InputThread.joinable())
         m_InputThread.join();
-}
-
-void Game::processEvent(sf::Keyboard::Key AKey)
-{
-    std::lock_guard<std::mutex> lock(m_InputMutex);
-    m_InputQueue.push(AKey);
 }
 
 void Game::gameLoop()
@@ -79,23 +85,6 @@ void Game::processInputLoop()
     }
 }
 
-void Game::setup()
-{
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<int8_t> range(0, FIELD_SIZE - 1);
-    
-    m_Apple = std::make_shared<Apple>();
-    m_Wall = std::make_shared<Wall>();
-    m_Snake = std::make_shared<Snake>(Point(range(gen), range(gen)), static_cast<EDirection>(range(gen) % 4));
-
-    relocateApple();
-
-    newDrawable(m_Apple);
-    newDrawable(m_Snake);
-    newDrawable(m_Wall);
-}
-
 void Game::relocateApple()
 {
     std::random_device rd;
@@ -126,6 +115,19 @@ void Game::expandWall()
     m_Wall->expand(expandLine);
 }
 
+void Game::processInput(sf::Keyboard::Key AKey)
+{
+    std::lock_guard<std::mutex> lock(m_InputMutex);
+    m_InputQueue.push(AKey);
+}
+
+void Game::draw(sf::RenderWindow &ATargetWindow) const
+{
+    m_Snake->draw(ATargetWindow);
+    m_Wall->draw(ATargetWindow);
+    m_Apple->draw(ATargetWindow);
+}
+
 void Game::step()
 {
     auto next = m_Snake->aboutToMove();
@@ -142,7 +144,6 @@ void Game::step()
         m_Snake->move();
         if(m_Snake->isHitSelf() || m_Wall->isHit(next))
         {
-            newDrawable(std::make_unique<DeathSpot>(next));
             m_IsGameOver = true;
         }
     }
