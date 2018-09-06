@@ -7,17 +7,15 @@ std::mutex ControlHandler::g_InstanceMutex;
 void ControlHandler::loadKeyMap()
 {
     FileDataAgent file;
-    auto content = file.read("./settings.conf");
+    auto content = file.read("settings.conf");
 
     if (content.empty())
     {
-        std::cout << "configureDefault() & saveKeyMap()\n";
         configureDefault();
         saveKeyMap();
     }
     else
     {
-        std::cout << "read from file\n";
         m_Keys.clear();
         m_Keys[Action::Up]      = static_cast<sf::Keyboard::Key>(content.at("Up"));
         m_Keys[Action::Down]    = static_cast<sf::Keyboard::Key>(content.at("Down"));
@@ -38,7 +36,7 @@ void ControlHandler::saveKeyMap()
     keyMap["Pause"] = static_cast<int>(m_Keys.at(Action::Pause));
     keyMap["Quit"]  = static_cast<int>(m_Keys.at(Action::Quit));
     FileDataAgent file;
-    file.write("./setting.conf", keyMap);
+    file.write("settings.conf", keyMap);
 }
 
 std::shared_ptr<ControlHandler> ControlHandler::getInstance()
