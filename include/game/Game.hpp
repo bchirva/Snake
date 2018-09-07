@@ -26,7 +26,6 @@ private:
 
     bool m_IsGameOver = false;
     bool m_IsPaused = false;
-    bool m_IsAboutToQuit = false;
 
     uint8_t m_TickCount = 0;
     static constexpr std::chrono::milliseconds g_Tick {10};
@@ -52,12 +51,10 @@ public:
 
     bool isGameOver() const;
     bool isPaused() const;
-    bool isAboutToQuit() const;
     uint16_t getScore() const;
 
     void start();
     void shutDown();
-    std::function<void(std::shared_ptr<IDrawable>)> newDrawable;
 };
 
 #endif

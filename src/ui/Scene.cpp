@@ -1,5 +1,6 @@
 #include "Scene.hpp"
 #include "Base.hpp"
+#include <iostream>
 
 void Scene::show(sf::RenderWindow &ATargetWindow)
 {
@@ -9,20 +10,34 @@ void Scene::show(sf::RenderWindow &ATargetWindow)
     footer.setFillColor(sf::Color(32, 32, 32));
     footer.setPosition(0, FIELD_SIZE * 16);
 
-    while (ATargetWindow.isOpen())
+    while (m_IsActive && ATargetWindow.isOpen())
     {
         sf::Event event;
         while (ATargetWindow.pollEvent(event))
         {
+            if (event.type == sf::Event::Closed)
+            {
+                ATargetWindow.close();
+            }
             if (event.type == sf::Event::KeyPressed)
             {
                 processInput(event.key.code);
             }
         }
-        ATargetWindow.clear();
-        ATargetWindow.draw(field);
-        ATargetWindow.draw(footer);
-        draw(ATargetWindow);
-        ATargetWindow.display();
+        if (ATargetWindow.isOpen())
+        {
+            ATargetWindow.clear();
+            ATargetWindow.draw(field);
+            ATargetWindow.draw(footer);
+            draw(ATargetWindow);
+            ATargetWindow.display();
+        }
     }
+}
+
+void Scene::quit()
+{
+    std::cout << "Scene::quit()\t";
+    m_IsActive = false;
+    std::cout << "m_IsActive = false;\n";
 }

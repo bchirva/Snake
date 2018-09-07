@@ -23,6 +23,8 @@ public:
     };
 
     static std::shared_ptr<ControlHandler> getInstance();
+
+    void setKey(ControlHandler::Action AAction, sf::Keyboard::Key AKey);
     sf::Keyboard::Key getKey(ControlHandler::Action AAction);
     std::string getKeyStr(ControlHandler::Action AAction);
     void loadKeyMap();

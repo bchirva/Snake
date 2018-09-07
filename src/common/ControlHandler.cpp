@@ -53,6 +53,11 @@ std::shared_ptr<ControlHandler> ControlHandler::getInstance()
     return g_Instance;
 }
 
+void ControlHandler::setKey(ControlHandler::Action AAction, sf::Keyboard::Key AKey)
+{
+    m_Keys.at(AAction) = AKey;
+}
+
 sf::Keyboard::Key ControlHandler::getKey(ControlHandler::Action AAction)
 {
     auto record = m_Keys.find(AAction);

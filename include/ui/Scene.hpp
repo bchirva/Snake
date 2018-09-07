@@ -10,8 +10,10 @@ public:
     Scene() = default;
     ~Scene() = default;
     void show(sf::RenderWindow& ATargetWindow);
+    void quit();
 
 protected:
+    bool m_IsActive = true;
     virtual void processInput(sf::Keyboard::Key AKey) = 0;
     virtual void draw(sf::RenderWindow& ATargetWindow) const = 0;
 };

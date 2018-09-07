@@ -16,6 +16,11 @@ std::string MenuItem::getLabel() const
     return m_Label;
 }
 
+void MenuItem::setLabel(const std::string& ALabel)
+{
+    m_Label = ALabel;
+}
+
 void MenuItem::action()
 {
     m_Action();
@@ -70,33 +75,30 @@ void Menu::draw(sf::RenderWindow& ADrawingWindow) const
     active.setOutlineThickness(2.0);
     active.setOutlineColor(sf::Color::Black);
 
-//    while (m_IsActive)
-//    {
-        uint32_t top = (ADrawingWindow.getSize().y - m_Items.size() * MenuItem::ITEM_HEIGHT) / 2;
+    uint32_t top = (ADrawingWindow.getSize().y - m_Items.size() * MenuItem::ITEM_HEIGHT) / 2;
 
-        for (auto item = m_Items.cbegin(); item != m_Items.cend(); ++item)
+    for (auto item = m_Items.cbegin(); item != m_Items.cend(); ++item)
+    {
+        label.setFillColor(sf::Color::Green);
+        label.setString(item->getLabel());
+        label.setPosition((ADrawingWindow.getSize().x - label.getLocalBounds().width) / 2, top + 4);
+
+        if (getCurrent() == item)
         {
-            label.setFillColor(sf::Color::Green);
-            label.setString(item->getLabel());
-            label.setPosition((ADrawingWindow.getSize().x - label.getLocalBounds().width) / 2, top + 4);
-
-            if (getCurrent() == item)
-            {
-                active.setPosition(label.getPosition().x - 4, label.getPosition().y);
-                active.setSize(sf::Vector2f(label.getLocalBounds().width + 8, MenuItem::ITEM_HEIGHT));
-                label.setFillColor(sf::Color::Black);
-                ADrawingWindow.draw(active);
-            }
-
-            if (!item->isActive())
-            {
-                label.setFillColor(sf::Color::Black);
-            }
-
-            ADrawingWindow.draw(label);
-            top += MenuItem::ITEM_HEIGHT;
+            active.setPosition(label.getPosition().x - 4, label.getPosition().y);
+            active.setSize(sf::Vector2f(label.getLocalBounds().width + 8, MenuItem::ITEM_HEIGHT));
+            label.setFillColor(sf::Color::Black);
+            ADrawingWindow.draw(active);
         }
-        //    }
+
+        if (!item->isActive())
+        {
+            label.setFillColor(sf::Color::Black);
+        }
+
+        ADrawingWindow.draw(label);
+        top += MenuItem::ITEM_HEIGHT;
+    }
 }
 
 void Menu::processInput(sf::Keyboard::Key AKey)

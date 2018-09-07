@@ -25,8 +25,8 @@ void Game::start()
 
 void Game::shutDown()
 {
-    if (!isAboutToQuit())
-        m_IsAboutToQuit = true;
+    if (m_IsActive)
+        m_IsActive = false;
 
     if (m_GameThread.joinable())
         m_GameThread.join();
@@ -36,7 +36,7 @@ void Game::shutDown()
 
 void Game::gameLoop()
 {
-    while(!isAboutToQuit())
+    while(m_IsActive)
     {
         std::this_thread::sleep_for(g_Tick);
         if(!m_IsPaused && !m_IsGameOver)
@@ -54,7 +54,7 @@ void Game::gameLoop()
 void Game::processInputLoop()
 {
     auto Handler = ControlHandler::getInstance();
-    while(!isAboutToQuit())
+    while(m_IsActive)
     {
         std::lock_guard<std::mutex> lock(m_InputMutex);
         while(!m_InputQueue.empty())
@@ -64,7 +64,7 @@ void Game::processInputLoop()
 
             if(key == Handler->getKey(ControlHandler::Action::Quit))
             {
-                m_IsAboutToQuit = true;
+                m_IsActive = false;
                 break;
             }
             if(key == Handler->getKey(ControlHandler::Action::Pause))
@@ -157,11 +157,6 @@ bool Game::isGameOver() const
 bool Game::isPaused() const
 {
     return m_IsPaused;
-}
-
-bool Game::isAboutToQuit() const
-{
-    return m_IsAboutToQuit;
 }
 
 uint16_t Game::getScore() const

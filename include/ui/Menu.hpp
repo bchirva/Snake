@@ -16,6 +16,7 @@ private:
 public:
     MenuItem(std::string&& ALabel, std::function<void()> AAction);
     std::string getLabel() const;
+    void setLabel(const std::string& ALabel);
     void action();
     bool isActive() const;
 
