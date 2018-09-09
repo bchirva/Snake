@@ -13,6 +13,6 @@ Turn Up | <kbd>W</kbd>
 Turn Down | <kbd>S</kbd> 
 Turn Left | <kbd>A</kbd>
 Turn Right | <kbd>D</kbd> 
-Pause | <kbd>P</kbd> 
-Exit | <kbd>Q</kbd> 
+Pause | <kbd>Space</kbd> 
+Exit | <kbd>Esc</kbd> 
 
