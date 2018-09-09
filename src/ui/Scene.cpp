@@ -37,7 +37,5 @@ void Scene::show(sf::RenderWindow &ATargetWindow)
 
 void Scene::quit()
 {
-    std::cout << "Scene::quit()\t";
     m_IsActive = false;
-    std::cout << "m_IsActive = false;\n";
 }

@@ -27,6 +27,8 @@ public:
     void setKey(ControlHandler::Action AAction, sf::Keyboard::Key AKey);
     sf::Keyboard::Key getKey(ControlHandler::Action AAction);
     std::string getKeyStr(ControlHandler::Action AAction);
+
+    void configureDefault();
     void loadKeyMap();
     void saveKeyMap();
 
@@ -36,7 +38,6 @@ private:
     static std::mutex g_InstanceMutex;
 
     ControlHandler() = default;
-    void configureDefault();
     std::string getString(sf::Keyboard::Key AKey);
 };
 

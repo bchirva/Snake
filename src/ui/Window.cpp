@@ -31,36 +31,52 @@ void Window::showRecords()
                        {"Reset", nullptr},
                       });
 
+    RecordsMenu.next();
     RecordsMenu.show(m_Window);
 }
 
 void Window::showSettingsMenu()
 {
+    Menu SettingsMenu;
     auto handler = ControlHandler::getInstance();
+
     auto newKey = [&](ControlHandler::Action AAction){
         sf::Event event;
-        while (m_Window.pollEvent(event))
-        {
-            if (event.type == sf::Event::KeyPressed)
-            {
-                handler->setKey(AAction, event.key.code);
-                break;
-            }
-        }
+        while (event.type != sf::Event::KeyPressed)
+            m_Window.waitEvent(event);
+
+        handler->setKey(AAction, event.key.code);
+        std::string oldLabel = SettingsMenu.getCurrent()->getLabel();
+        oldLabel = oldLabel.substr(0, oldLabel.find('\t'));
+        SettingsMenu.getCurrent()->setLabel(oldLabel + '\t' + handler->getKeyStr(AAction));
     };
 
-    Menu SettingsMenu ({{std::string("UP\t"    + handler->getKeyStr(ControlHandler::Action::Up)),    std::bind(newKey, ControlHandler::Action::Up)},
-                        {std::string("DOWN\t"  + handler->getKeyStr(ControlHandler::Action::Down)),  std::bind(newKey, ControlHandler::Action::Down)},
-                        {std::string("LEFT\t"  + handler->getKeyStr(ControlHandler::Action::Left)),  std::bind(newKey, ControlHandler::Action::Left)},
-                        {std::string("RIGHT\t" + handler->getKeyStr(ControlHandler::Action::Right)), std::bind(newKey, ControlHandler::Action::Right)},
-                        {std::string("Pause\t" + handler->getKeyStr(ControlHandler::Action::Pause)), std::bind(newKey, ControlHandler::Action::Pause)},
-                        {std::string("Quit\t"  + handler->getKeyStr(ControlHandler::Action::Quit)),  std::bind(newKey, ControlHandler::Action::Quit)},
-                        {"\t", nullptr},
-                        {"Back", [&](){SettingsMenu.quit();}},
-                        {"Reset", nullptr},
-                        {"Apply", nullptr}
+    SettingsMenu = Menu({{std::string("UP\t"   + handler->getKeyStr(ControlHandler::Action::Up)),
+                          std::bind(newKey, ControlHandler::Action::Up)},
+                         {std::string("DOWN\t"  + handler->getKeyStr(ControlHandler::Action::Down)),
+                          std::bind(newKey, ControlHandler::Action::Down)},
+                         {std::string("LEFT\t"  + handler->getKeyStr(ControlHandler::Action::Left)),
+                          std::bind(newKey, ControlHandler::Action::Left)},
+                         {std::string("RIGHT\t" + handler->getKeyStr(ControlHandler::Action::Right)),
+                          std::bind(newKey, ControlHandler::Action::Right)},
+                         {std::string("Pause\t" + handler->getKeyStr(ControlHandler::Action::Pause)),
+                          std::bind(newKey, ControlHandler::Action::Pause)},
+                         {std::string("Quit\t"  + handler->getKeyStr(ControlHandler::Action::Quit)),
+                          std::bind(newKey, ControlHandler::Action::Quit)},
+                         {"\t", nullptr},
+                         {"Back", [&](){
+                             handler->loadKeyMap();
+                             SettingsMenu.quit();}},
+                         {"Reset", [&](){
+                              handler->configureDefault();
+                              handler->saveKeyMap();
+                              SettingsMenu.quit();
+                         }},
+                         {"Apply", [&](){
+                              handler->saveKeyMap();
+                              SettingsMenu.quit();
+                          }}
                        });
-    SettingsMenu.next();
     SettingsMenu.show(m_Window);
 }
 
