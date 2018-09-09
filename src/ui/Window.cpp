@@ -1,4 +1,3 @@
-#include <iostream>
 #include "Window.hpp"
 
 Window::Window()
@@ -42,13 +41,23 @@ void Window::showSettingsMenu()
 
     auto newKey = [&](ControlHandler::Action AAction){
         sf::Event event;
-        while (event.type != sf::Event::KeyPressed)
-            m_Window.waitEvent(event);
 
-        handler->setKey(AAction, event.key.code);
-        std::string oldLabel = SettingsMenu.getCurrent()->getLabel();
-        oldLabel = oldLabel.substr(0, oldLabel.find('\t'));
-        SettingsMenu.getCurrent()->setLabel(oldLabel + '\t' + handler->getKeyStr(AAction));
+        do
+        {
+            m_Window.waitEvent(event);
+            if (event.type == sf::Event::KeyPressed)
+            {
+                if (!handler->isBusy(event.key.code))
+                {
+                    handler->setKey(AAction, event.key.code);
+                    std::string oldLabel = SettingsMenu.getCurrent()->getLabel();
+                    oldLabel = oldLabel.substr(0, oldLabel.find('\t'));
+                    SettingsMenu.getCurrent()->setLabel(oldLabel + '\t' + handler->getKeyStr(AAction));
+                    break;
+                }
+            }
+        }
+        while (true);
     };
 
     SettingsMenu = Menu({{std::string("UP\t"   + handler->getKeyStr(ControlHandler::Action::Up)),

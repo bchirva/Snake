@@ -1,4 +1,3 @@
-#include <iostream>
 #include "Menu.hpp"
 
 MenuItem::MenuItem(std::string&& ALabel, std::function<void()> AAction)

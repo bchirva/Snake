@@ -1,5 +1,4 @@
 #include "ControlHandler.hpp"
-#include <iostream>
 
 std::shared_ptr<ControlHandler> ControlHandler::g_Instance = nullptr;
 std::mutex ControlHandler::g_InstanceMutex;
@@ -37,6 +36,16 @@ void ControlHandler::saveKeyMap()
     keyMap["Quit"]  = static_cast<int>(m_Keys.at(Action::Quit));
     FileDataAgent file;
     file.write("settings.conf", keyMap);
+}
+
+bool ControlHandler::isBusy(sf::Keyboard::Key AKey)
+{
+    for(auto item: m_Keys)
+    {
+        if (item.second == AKey)
+            return true;
+    }
+    return false;
 }
 
 std::shared_ptr<ControlHandler> ControlHandler::getInstance()

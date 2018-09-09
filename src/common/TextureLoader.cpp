@@ -1,5 +1,4 @@
 #include "TextureLoader.hpp"
-#include <iostream>
 
 std::shared_ptr<TextureLoader> TextureLoader::g_Instance = nullptr;
 std::mutex TextureLoader::g_InstanceMutex;

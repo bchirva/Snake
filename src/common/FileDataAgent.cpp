@@ -1,5 +1,4 @@
 #include "FileDataAgent.hpp"
-#include <iostream>
 
 void FileDataAgent::write(const std::string& AFileName, const std::map<std::string, int>& AData)
 {

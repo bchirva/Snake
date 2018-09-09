@@ -1,6 +1,5 @@
 #include "Scene.hpp"
 #include "Base.hpp"
-#include <iostream>
 
 void Scene::show(sf::RenderWindow &ATargetWindow)
 {

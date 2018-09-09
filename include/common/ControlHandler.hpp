@@ -31,6 +31,7 @@ public:
     void configureDefault();
     void loadKeyMap();
     void saveKeyMap();
+    bool isBusy(sf::Keyboard::Key AKey);
 
 private:
     std::map<ControlHandler::Action, sf::Keyboard::Key> m_Keys {};
