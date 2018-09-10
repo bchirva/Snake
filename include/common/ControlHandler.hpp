@@ -27,6 +27,7 @@ public:
     void setKey(ControlHandler::Action AAction, sf::Keyboard::Key AKey);
     sf::Keyboard::Key getKey(ControlHandler::Action AAction);
     std::string getKeyStr(ControlHandler::Action AAction);
+    std::string getKeyStr(sf::Keyboard::Key AKey);
 
     void configureDefault();
     void loadKeyMap();

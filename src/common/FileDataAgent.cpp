@@ -1,6 +1,6 @@
 #include "FileDataAgent.hpp"
 
-void FileDataAgent::write(const std::string& AFileName, const std::map<std::string, int>& AData)
+void FileDataAgent::write(const std::string& AFileName, const std::multimap<std::string, int>& AData)
 {
     std::ofstream WriteStream (AFileName);
     if(WriteStream.is_open())
@@ -13,9 +13,9 @@ void FileDataAgent::write(const std::string& AFileName, const std::map<std::stri
     }
 }
 
-std::map<std::string, int> FileDataAgent::read(const std::string& AFileName)
+std::multimap<std::string, int> FileDataAgent::read(const std::string& AFileName)
 {
-    std::map<std::string, int> FileContent {};
+    std::multimap<std::string, int> FileContent {};
     std::string buff {};
     std::ifstream ReadStream(AFileName);
 
@@ -24,7 +24,9 @@ std::map<std::string, int> FileDataAgent::read(const std::string& AFileName)
         while (std::getline(ReadStream, buff))
         {
             size_t delim = buff.find('=');
-            FileContent[buff.substr(0, delim)] = std::stoi(buff.substr(delim + 1));
+            //FileContent[buff.substr(0, delim)] = std::stoi(buff.substr(delim + 1));
+            //FileContent.insert(std::pair<std::string, int>(buff.substr(0, delim), std::stoi(buff.substr(delim + 1))));
+            FileContent.insert(std::make_pair(buff.substr(0, delim), std::stoi(buff.substr(delim + 1))));
             buff.clear();
         }
         ReadStream.close();

@@ -16,24 +16,24 @@ void ControlHandler::loadKeyMap()
     else
     {
         m_Keys.clear();
-        m_Keys[Action::Up]      = static_cast<sf::Keyboard::Key>(content.at("Up"));
-        m_Keys[Action::Down]    = static_cast<sf::Keyboard::Key>(content.at("Down"));
-        m_Keys[Action::Left]    = static_cast<sf::Keyboard::Key>(content.at("Left"));
-        m_Keys[Action::Right]   = static_cast<sf::Keyboard::Key>(content.at("Right"));
-        m_Keys[Action::Pause]   = static_cast<sf::Keyboard::Key>(content.at("Pause"));
-        m_Keys[Action::Quit]    = static_cast<sf::Keyboard::Key>(content.at("Quit"));
+        m_Keys[Action::Up]    = static_cast<sf::Keyboard::Key>(content.find("Up")->second);
+        m_Keys[Action::Down]  = static_cast<sf::Keyboard::Key>(content.find("Down")->second);
+        m_Keys[Action::Left]  = static_cast<sf::Keyboard::Key>(content.find("Left")->second);
+        m_Keys[Action::Right] = static_cast<sf::Keyboard::Key>(content.find("Right")->second);
+        m_Keys[Action::Pause] = static_cast<sf::Keyboard::Key>(content.find("Pause")->second);
+        m_Keys[Action::Quit]  = static_cast<sf::Keyboard::Key>(content.find("Quit")->second);
     }
 }
 
 void ControlHandler::saveKeyMap()
 {
-    std::map<std::string, int> keyMap;
-    keyMap["Up"]    = static_cast<int>(m_Keys.at(Action::Up));
-    keyMap["Down"]  = static_cast<int>(m_Keys.at(Action::Down));
-    keyMap["Left"]  = static_cast<int>(m_Keys.at(Action::Left));
-    keyMap["Right"] = static_cast<int>(m_Keys.at(Action::Right));
-    keyMap["Pause"] = static_cast<int>(m_Keys.at(Action::Pause));
-    keyMap["Quit"]  = static_cast<int>(m_Keys.at(Action::Quit));
+    std::multimap<std::string, int> keyMap;
+    keyMap.insert(std::make_pair("Up",    static_cast<int>(m_Keys.at(Action::Up))));
+    keyMap.insert(std::make_pair("Down",  static_cast<int>(m_Keys.at(Action::Down))));
+    keyMap.insert(std::make_pair("Left",  static_cast<int>(m_Keys.at(Action::Left))));
+    keyMap.insert(std::make_pair("Right", static_cast<int>(m_Keys.at(Action::Right))));
+    keyMap.insert(std::make_pair("Pause", static_cast<int>(m_Keys.at(Action::Pause))));
+    keyMap.insert(std::make_pair("Quit",  static_cast<int>(m_Keys.at(Action::Quit))));
     FileDataAgent file;
     file.write("settings.conf", keyMap);
 }
@@ -79,6 +79,11 @@ sf::Keyboard::Key ControlHandler::getKey(ControlHandler::Action AAction)
 std::string ControlHandler::getKeyStr(ControlHandler::Action AAction)
 {
     return getString(getKey(AAction));
+}
+
+std::string ControlHandler::getKeyStr(sf::Keyboard::Key AKey)
+{
+    return getString(AKey);
 }
 
 void ControlHandler::configureDefault()

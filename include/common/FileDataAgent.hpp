@@ -11,8 +11,8 @@ public:
     FileDataAgent() = default;
     ~FileDataAgent() = default;
 
-    void write(const std::string& AFileName, const std::map<std::string, int>& AData);
-    std::map<std::string, int> read(const std::string& AFileName);
+    void write(const std::string& AFileName, const std::multimap<std::string, int> &AData);
+    std::multimap<std::string, int> read(const std::string& AFileName);
 };
 
 #endif
