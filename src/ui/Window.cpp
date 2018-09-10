@@ -9,7 +9,8 @@ void Window::drawGame()
     Game game;
     game.start();
     game.show(m_Window);
-    game.shutDown();
+    auto score = game.exec();
+    (void)(score);
 }
 
 void Window::showRecords()

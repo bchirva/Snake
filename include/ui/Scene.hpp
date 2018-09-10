@@ -8,7 +8,7 @@ class Scene
 {
 public:
     Scene() = default;
-    ~Scene() = default;
+    virtual ~Scene() = default;
     void show(sf::RenderWindow& ATargetWindow);
     void quit();
 

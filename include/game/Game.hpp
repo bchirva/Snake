@@ -51,10 +51,9 @@ public:
 
     bool isGameOver() const;
     bool isPaused() const;
-    uint16_t getScore() const;
 
     void start();
-    void shutDown();
+    uint16_t exec();
 };
 
 #endif

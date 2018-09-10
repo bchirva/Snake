@@ -23,15 +23,14 @@ void Game::start()
     m_GameThread = std::thread(&Game::gameLoop, this);
 }
 
-void Game::shutDown()
+uint16_t Game::exec()
 {
-    if (m_IsActive)
-        m_IsActive = false;
-
     if (m_GameThread.joinable())
         m_GameThread.join();
     if (m_InputThread.joinable())
         m_InputThread.join();
+
+    return m_Score;
 }
 
 void Game::gameLoop()
@@ -157,9 +156,4 @@ bool Game::isGameOver() const
 bool Game::isPaused() const
 {
     return m_IsPaused;
-}
-
-uint16_t Game::getScore() const
-{
-    return m_Score;
 }
