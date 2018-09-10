@@ -5,6 +5,8 @@ compile_commands.json
 
 *.user
 
+*.cmake
+
 # From https://github.com/github/gitignore/
 # Compiled Object files
 *.slo

@@ -10,6 +10,7 @@ add_executable (Snake
     src/ui/Window.cpp
     src/ui/Scene.cpp
     src/ui/Menu.cpp
+    src/ui/NewRecordMenu.cpp
     src/game/Game.cpp
     src/game/Snake.cpp
     src/game/Wall.cpp
@@ -19,6 +20,7 @@ add_executable (Snake
     src/game/DeathSpot.cpp
     src/common/TextureLoader.cpp
     src/common/ControlHandler.cpp
+    src/common/TopScoreHolder.cpp
     src/common/FileDataAgent.cpp
     )
 
