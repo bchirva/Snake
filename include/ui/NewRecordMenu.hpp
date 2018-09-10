@@ -1,12 +1,12 @@
 #ifndef NEWRECORDMENU_HPP
 #define NEWRECORDMENU_HPP
 
-#include "Scene.hpp"
+#include "Menu.hpp"
 
-class NewRecordMenu : public Scene
+class NewRecordMenu : public Menu
 {
 public:
-    NewRecordMenu() = default;
+    NewRecordMenu();
     ~NewRecordMenu() = default;
     std::string getPlayerName() const;
 
@@ -14,7 +14,6 @@ private:
     std::string m_PlayerName {};
 
     void processInput(sf::Keyboard::Key AKey) override;
-    void draw(sf::RenderWindow& ATargetWindow) const override;
 };
 
 #endif // NEWRECORDMENU_HPP

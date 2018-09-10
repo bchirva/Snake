@@ -25,7 +25,7 @@ public:
 
 class Menu : public Scene
 {
-private:
+protected:
     std::list<MenuItem> m_Items;
     decltype(m_Items.begin()) m_CurrentItem;
     bool m_IsActive = true;

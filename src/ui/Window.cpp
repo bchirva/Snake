@@ -1,4 +1,5 @@
 #include "Window.hpp"
+#include "NewRecordMenu.hpp"
 
 Window::Window()
 {
@@ -11,6 +12,10 @@ void Window::drawGame()
     game.show(m_Window);
     auto score = game.exec();
     (void)(score);
+
+    NewRecordMenu newRecordMenu;
+    newRecordMenu.show(m_Window);
+    std::string playerName = newRecordMenu.getPlayerName();
 }
 
 void Window::showRecords()
@@ -85,7 +90,7 @@ void Window::showSettingsMenu()
                          {"Apply", [&](){
                               handler->saveKeyMap();
                               SettingsMenu.quit();
-                          }}
+                         }}
                        });
     SettingsMenu.show(m_Window);
 }
