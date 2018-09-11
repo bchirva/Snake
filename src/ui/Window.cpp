@@ -1,9 +1,6 @@
 #include "Window.hpp"
 #include "NewRecordMenu.hpp"
-
-Window::Window()
-{
-}
+#include "TopScoreHolder.hpp"
 
 void Window::drawGame()
 {
@@ -11,11 +8,14 @@ void Window::drawGame()
     game.start();
     game.show(m_Window);
     auto score = game.exec();
-    (void)(score);
 
-    NewRecordMenu newRecordMenu;
-    newRecordMenu.show(m_Window);
-    std::string playerName = newRecordMenu.getPlayerName();
+    auto scoreHolder = TopScoreHolder::getInstance();
+    if (scoreHolder->isNewRecord(score))
+    {
+        NewRecordMenu newRecordMenu;
+        newRecordMenu.show(m_Window);
+        scoreHolder->insertRecord(std::make_pair(newRecordMenu.getPlayerName(), score));
+    }
 }
 
 void Window::showRecords()

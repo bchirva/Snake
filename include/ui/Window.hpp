@@ -27,7 +27,7 @@ private:
     void showMainMenu();
 
 public:
-    Window();
+    Window() = default;
     ~Window() = default;
     
     void open();

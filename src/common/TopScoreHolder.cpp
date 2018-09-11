@@ -4,22 +4,17 @@
 std::shared_ptr<TopScoreHolder> TopScoreHolder::g_Instance = nullptr;
 std::mutex TopScoreHolder::g_InstanceMutex;
 
-TopScoreHolder::TopScoreHolder()
-{
-
-}
-
 void TopScoreHolder::loadRecords()
 {
     FileDataAgent file;
     auto topScore = file.read("score.txt");
-    m_Scores.clear();
+    m_Records.fill(std::make_pair("",0));
 }
 
 void TopScoreHolder::saveRecords()
 {
     std::multimap<std::string, int> topScore {};
-    for (auto item: m_Scores)
+    for (auto item: m_Records)
     {
         topScore.insert(std::make_pair(item.first, item.second));
     }
@@ -40,12 +35,17 @@ std::shared_ptr<TopScoreHolder> TopScoreHolder::getInstance()
     return g_Instance;
 }
 
-const std::list<std::pair<std::string, int> > &TopScoreHolder::getTopScore() const
+const std::array<std::pair<std::string, int>, 3>& TopScoreHolder::getRecords() const
 {
-    return m_Scores;
+    return m_Records;
 }
 
-void TopScoreHolder::insertRecord(std::pair<std::string, int>)
+bool TopScoreHolder::isNewRecord(int AScore) const
+{
+    return AScore > m_Records.at(m_Records.size() - 1).second;
+}
+
+void TopScoreHolder::insertRecord(std::pair<std::string, int> ANewRecord)
 {
 
 }

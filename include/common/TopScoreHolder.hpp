@@ -4,23 +4,25 @@
 #include <memory>
 #include <mutex>
 #include <list>
+#include <array>
 
 class TopScoreHolder
 {
 private:
     static std::shared_ptr<TopScoreHolder> g_Instance;
     static std::mutex g_InstanceMutex;
-    std::list<std::pair<std::string, int>> m_Scores {};
+    std::array<std::pair<std::string, int>, 3> m_Records {};
 
-    TopScoreHolder();
+    TopScoreHolder() = default;
     void loadRecords();
     void saveRecords();
 
 public:
     ~TopScoreHolder() = default;
     static std::shared_ptr<TopScoreHolder> getInstance();
-    const std::list<std::pair<std::string, int>>& getTopScore() const;
-    void insertRecord(std::pair<std::string, int>);
+    void insertRecord(std::pair<std::string, int> ANewRecord);
+    const std::array<std::pair<std::string, int>, 3>& getRecords() const;
+    bool isNewRecord(int AScore) const;
 };
 
 #endif // TOPSCOREHOLDER_HPP

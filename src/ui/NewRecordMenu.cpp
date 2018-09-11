@@ -30,10 +30,10 @@ void NewRecordMenu::processInput(sf::Keyboard::Key AKey)
         m_PlayerName.clear();
         quit();
     }
-        else if (AKey == sf::Keyboard::Enter)
-        {
-            quit();
-        }
+    else if (AKey == sf::Keyboard::Enter)
+    {
+        quit();
+    }
     else if (AKey == sf::Keyboard::Backspace)
     {
         if (m_PlayerName.length() > 0)
