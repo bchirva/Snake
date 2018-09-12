@@ -20,20 +20,19 @@ void Window::drawGame()
 
 void Window::showRecords()
 {
-    FileDataAgent agent;
-    auto savedScores = agent.read("top_scores.txt");
-    std::vector<std::pair<std::string, int>> top;
-    size_t recordCout = top.size();
 
-    for (size_t i = 0; i < (3 - recordCout); i++)
-        top.push_back(std::make_pair<std::string, int>("", 0));
+    auto scoreHolder = TopScoreHolder::getInstance();
+    auto top = scoreHolder->getRecords();
 
-    Menu RecordsMenu ({{std::string(top.at(0).first + std::to_string(top.at(0).second)), nullptr},
-                       {std::string(top.at(1).first + std::to_string(top.at(1).second)), nullptr},
-                       {std::string(top.at(2).first + std::to_string(top.at(2).second)), nullptr},
+    Menu RecordsMenu ({{std::string(top.at(0).first + " : " + std::to_string(top.at(0).second)), nullptr},
+                       {std::string(top.at(1).first + " : " + std::to_string(top.at(1).second)), nullptr},
+                       {std::string(top.at(2).first + " : " + std::to_string(top.at(2).second)), nullptr},
                        {"\t", nullptr},
                        {"Back", [&](){RecordsMenu.quit();}},
-                       {"Reset", nullptr},
+                       {"Reset", [&](){
+                            scoreHolder->reset();
+                            RecordsMenu.quit();
+                        }},
                       });
 
     RecordsMenu.next();

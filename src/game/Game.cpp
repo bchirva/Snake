@@ -125,6 +125,29 @@ void Game::draw(sf::RenderWindow &ATargetWindow) const
     m_Snake->draw(ATargetWindow);
     m_Wall->draw(ATargetWindow);
     m_Apple->draw(ATargetWindow);
+
+    auto font = TextureLoader::getInstance()->getFont();
+    sf::Text scoreLabel;
+    scoreLabel.setFont(font);
+    scoreLabel.setPosition(8, FIELD_SIZE * 16 + 4);
+    scoreLabel.setCharacterSize(16);
+    scoreLabel.setFillColor(sf::Color(224, 224, 224));
+    scoreLabel.setString("Score: " + std::to_string(m_Score));
+
+    if (m_IsGameOver || m_IsPaused)
+    {
+        sf::Text stateLabel;
+        stateLabel.setFont(font);
+        stateLabel.setCharacterSize(16);
+        stateLabel.setFillColor(sf::Color::Red);
+
+        if (m_IsPaused)         stateLabel.setString("PAUSE");
+        else if (m_IsGameOver)  stateLabel.setString("GAME OVER");
+        stateLabel.setPosition((FIELD_SIZE * 16 / 2) - stateLabel.getGlobalBounds().width / 2 , FIELD_SIZE * 16 + 4);
+
+        ATargetWindow.draw(stateLabel);
+    }
+    ATargetWindow.draw(scoreLabel);
 }
 
 void Game::step()
