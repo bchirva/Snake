@@ -14,7 +14,7 @@ private:
     std::function<void()> m_Action = nullptr;
 
 public:
-    MenuItem(std::string&& ALabel, std::function<void()> AAction);
+    MenuItem(std::string ALabel, std::function<void()> AAction);
     std::string getLabel() const;
     void setLabel(const std::string& ALabel);
     void action();

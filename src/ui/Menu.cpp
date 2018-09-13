@@ -1,6 +1,6 @@
 #include "Menu.hpp"
 
-MenuItem::MenuItem(std::string&& ALabel, std::function<void()> AAction)
+MenuItem::MenuItem(std::string ALabel, std::function<void()> AAction)
     : m_Label(ALabel), m_Action(AAction)
 {}
 

@@ -20,21 +20,27 @@ void Window::drawGame()
 
 void Window::showRecords()
 {
-
+    Menu RecordsMenu;
     auto scoreHolder = TopScoreHolder::getInstance();
-    auto top = scoreHolder->getRecords();
 
-    Menu RecordsMenu ({{std::string(top.at(0).first + " : " + std::to_string(top.at(0).second)), nullptr},
-                       {std::string(top.at(1).first + " : " + std::to_string(top.at(1).second)), nullptr},
-                       {std::string(top.at(2).first + " : " + std::to_string(top.at(2).second)), nullptr},
-                       {"\t", nullptr},
-                       {"Back", [&](){RecordsMenu.quit();}},
-                       {"Reset", [&](){
-                            scoreHolder->reset();
-                            RecordsMenu.quit();
-                        }},
-                      });
+    std::list<MenuItem> menuItemList {};
+    for (auto item: scoreHolder->getRecords())
+    {
+        std::string label;
+        if (item.second != 0)
+            label = std::string(item.first + " : " + std::to_string(item.second));
+        else
+            label = "\t";
+        menuItemList.push_back({label, nullptr});
+    }
+    menuItemList.push_back({"\t", nullptr});
+    menuItemList.push_back({"Back", [&](){RecordsMenu.quit();}});
+    menuItemList.push_back({"Reset", [&](){
+        scoreHolder->reset();
+        RecordsMenu.quit();
+    }});
 
+    RecordsMenu = Menu(std::move(menuItemList));
     RecordsMenu.next();
     RecordsMenu.show(m_Window);
 }
