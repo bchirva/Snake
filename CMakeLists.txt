@@ -2,8 +2,10 @@ cmake_minimum_required (VERSION 3.5.2 FATAL_ERROR)
 
 project (Snake)
 
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup(TARGETS)
+
 find_package (Threads REQUIRED)
-find_package (SFML COMPONENTS system graphics window REQUIRED)
 
 add_executable (Snake
     src/main.cpp
@@ -26,8 +28,8 @@ add_executable (Snake
 
 set_property (TARGET Snake PROPERTY CXX_STANDARD 14)
 
-if (NOT ${CMAKE_CURRENT_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_BINARY_DIR})
-    file(COPY resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/)
+if (NOT ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+    file(COPY resources DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/)
 endif()
 
 if (MSVC)
@@ -51,9 +53,7 @@ target_include_directories (Snake
 
 target_link_libraries (Snake
     PRIVATE
-        sfml-system
-        sfml-graphics
-        sfml-window
+        CONAN_PKG::sfml
         Threads::Threads
     )
 
