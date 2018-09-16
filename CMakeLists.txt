@@ -23,7 +23,6 @@ add_executable (Snake
     src/common/TextureLoader.cpp
     src/common/ControlHandler.cpp
     src/common/TopScoreHolder.cpp
-    src/common/FileDataAgent.cpp
     )
 
 set_property (TARGET Snake PROPERTY CXX_STANDARD 14)
@@ -54,6 +53,7 @@ target_include_directories (Snake
 target_link_libraries (Snake
     PRIVATE
         CONAN_PKG::sfml
+        CONAN_PKG::yaml-cpp
         Threads::Threads
     )
 

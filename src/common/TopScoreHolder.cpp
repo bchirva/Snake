@@ -1,33 +1,56 @@
-#include <algorithm>
 #include "TopScoreHolder.hpp"
-#include "FileDataAgent.hpp"
+#include <algorithm>
+#include <fstream>
+#include <yaml-cpp/yaml.h>
 
 std::shared_ptr<TopScoreHolder> TopScoreHolder::g_Instance = nullptr;
 std::mutex TopScoreHolder::g_InstanceMutex;
 
 void TopScoreHolder::loadRecords()
 {
-    FileDataAgent file;
-    auto topScore = file.read("score.txt");
-    m_Records.fill(Record());
-    int i = 0;
-    for (auto item: topScore)
+    YAML::Node root;
+    try
     {
-        m_Records[i] = std::make_pair(item.first, item.second);
-        i++;
+        root = YAML::LoadFile("resources/records.yaml");
     }
+    catch(YAML::BadFile&)
+    {
+        m_Records.fill(Record());
+        return;
+    }
+
+    YAML::Node records = root["Records"];
+    for (size_t i = 0; i < records.size(); i++)
+    {
+        std::string name {};
+        int score {0};
+        try
+        {
+            name = records[i]["PlayerName"].as<std::string>();
+            score = records[i]["Score"].as<int>();
+        }
+        catch (YAML::BadConversion&){}
+        m_Records[i] = std::make_pair(name, score);
+    }
+
     std::sort(m_Records.rbegin(), m_Records.rend());
 }
 
 void TopScoreHolder::saveRecords()
 {
-    std::multimap<std::string, int> topScore {};
-    for (auto item: m_Records)
+    YAML::Node root;
+    root["Records"];
+    for (size_t i = 0; i < m_Records.size(); i++)
     {
-        topScore.insert(std::make_pair(item.first, item.second));
+        root["Records"][i]["PlayerName"] = m_Records[i].first;
+        root["Records"][i]["Score"] = m_Records[i].second;
     }
-    FileDataAgent file;
-    file.write("score.txt", topScore);
+    std::ofstream out ("resources/records.yaml");
+    if (out.is_open())
+    {
+        out << root;
+        out.close();
+    }
 }
 
 std::shared_ptr<TopScoreHolder> TopScoreHolder::getInstance()

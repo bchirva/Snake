@@ -1,41 +1,73 @@
 #include "ControlHandler.hpp"
+#include <fstream>
 
 std::shared_ptr<ControlHandler> ControlHandler::g_Instance = nullptr;
 std::mutex ControlHandler::g_InstanceMutex;
 
 void ControlHandler::loadKeyMap()
 {
-    FileDataAgent file;
-    auto content = file.read("settings.conf");
-
-    if (content.empty())
+    bool isFileExist = true;
+    YAML::Node root;
+    try
     {
-        configureDefault();
+        root = YAML::LoadFile("resources/settings.yaml");
+    }
+    catch (YAML::BadFile&)
+    {
+        isFileExist = false;
+    }
+
+    if (root.IsNull())
+    {
+        isFileExist = false;
+    }
+
+    YAML::Node keys = root["Keys"];
+    configureDefault();
+    readKey(keys["Up"],    m_Keys[Action::Up]);
+    readKey(keys["Down"],  m_Keys[Action::Down]);
+    readKey(keys["Left"],  m_Keys[Action::Left]);
+    readKey(keys["Right"], m_Keys[Action::Right]);
+    readKey(keys["Pause"], m_Keys[Action::Pause]);
+    readKey(keys["Quit"],  m_Keys[Action::Quit]);
+
+    if (!isFileExist)
+    {
         saveKeyMap();
     }
-    else
+}
+
+
+void ControlHandler::readKey(const YAML::Node& ANode, sf::Keyboard::Key& AKey)
+{
+    try
     {
-        m_Keys.clear();
-        m_Keys[Action::Up]    = static_cast<sf::Keyboard::Key>(content.find("Up")->second);
-        m_Keys[Action::Down]  = static_cast<sf::Keyboard::Key>(content.find("Down")->second);
-        m_Keys[Action::Left]  = static_cast<sf::Keyboard::Key>(content.find("Left")->second);
-        m_Keys[Action::Right] = static_cast<sf::Keyboard::Key>(content.find("Right")->second);
-        m_Keys[Action::Pause] = static_cast<sf::Keyboard::Key>(content.find("Pause")->second);
-        m_Keys[Action::Quit]  = static_cast<sf::Keyboard::Key>(content.find("Quit")->second);
+        int Value = ANode.as<int>();
+        AKey = static_cast<sf::Keyboard::Key>(Value);
+    }
+    catch (YAML::BadConversion&)
+    {
     }
 }
 
 void ControlHandler::saveKeyMap()
 {
-    std::multimap<std::string, int> keyMap;
-    keyMap.insert(std::make_pair("Up",    static_cast<int>(m_Keys.at(Action::Up))));
-    keyMap.insert(std::make_pair("Down",  static_cast<int>(m_Keys.at(Action::Down))));
-    keyMap.insert(std::make_pair("Left",  static_cast<int>(m_Keys.at(Action::Left))));
-    keyMap.insert(std::make_pair("Right", static_cast<int>(m_Keys.at(Action::Right))));
-    keyMap.insert(std::make_pair("Pause", static_cast<int>(m_Keys.at(Action::Pause))));
-    keyMap.insert(std::make_pair("Quit",  static_cast<int>(m_Keys.at(Action::Quit))));
-    FileDataAgent file;
-    file.write("settings.conf", keyMap);
+    YAML::Node keys;
+    keys["Up"]    = static_cast<int>(m_Keys.at(Action::Up));
+    keys["Down"]  = static_cast<int>(m_Keys.at(Action::Down));
+    keys["Left"]  = static_cast<int>(m_Keys.at(Action::Left));
+    keys["Right"] = static_cast<int>(m_Keys.at(Action::Right));
+    keys["Pause"] = static_cast<int>(m_Keys.at(Action::Pause));
+    keys["Quit"]  = static_cast<int>(m_Keys.at(Action::Quit));
+
+    YAML::Node root;
+    root["Keys"] = keys;
+    std::ofstream out ("resources/settings.yaml");
+    if(out.is_open())
+    {
+        out << root;
+        out.close();
+    }
 }
 
 bool ControlHandler::isBusy(sf::Keyboard::Key AKey)
@@ -95,7 +127,6 @@ void ControlHandler::configureDefault()
     m_Keys[Action::Right]    = sf::Keyboard::D;
     m_Keys[Action::Pause]    = sf::Keyboard::Space;
     m_Keys[Action::Quit]     = sf::Keyboard::Escape;
-    saveKeyMap();
 }
 
 std::string ControlHandler::getString(sf::Keyboard::Key AKey)

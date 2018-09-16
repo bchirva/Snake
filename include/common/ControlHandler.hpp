@@ -6,8 +6,9 @@
 #include <mutex>
 
 #include <SFML/Window/Keyboard.hpp>
+#include <yaml-cpp/yaml.h>
 
-#include "FileDataAgent.hpp"
+//#include "FileDataAgent.hpp"
 
 class ControlHandler
 {
@@ -26,6 +27,7 @@ public:
 
     void setKey(ControlHandler::Action AAction, sf::Keyboard::Key AKey);
     sf::Keyboard::Key getKey(ControlHandler::Action AAction);
+
     std::string getKeyStr(ControlHandler::Action AAction);
     std::string getKeyStr(sf::Keyboard::Key AKey);
 
@@ -41,6 +43,7 @@ private:
 
     ControlHandler() = default;
     std::string getString(sf::Keyboard::Key AKey);
+    void readKey(const YAML::Node& ANode, sf::Keyboard::Key& AKey);
 };
 
 #endif // CONTROLHANDLER_HPP
