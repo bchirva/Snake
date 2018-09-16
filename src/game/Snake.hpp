@@ -7,11 +7,6 @@
 
 class Snake : public Line, public IDrawable
 {
-private:
-    EDirection m_CurrentDirection;
-    EDirection m_NextDirection;
-    std::mutex m_DirectionMutex;
-    mutable std::recursive_mutex m_PointsMutex;
 public:
     Snake(Point ABegin, EDirection ADirection);
     ~Snake() = default;
@@ -22,6 +17,12 @@ public:
     void turn(EDirection ADirection);
     void move();
     const Point& aboutToMove();
+
+private:
+    EDirection m_CurrentDirection;
+    EDirection m_NextDirection;
+    std::mutex m_DirectionMutex;
+    mutable std::recursive_mutex m_PointsMutex;
 };
 
 #endif

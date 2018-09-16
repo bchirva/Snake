@@ -32,7 +32,7 @@ std::shared_ptr<TextureLoader> TextureLoader::getInstance()
 bool TextureLoader::loadTextures()
 {
     sf::Image img;
-    if(!img.loadFromFile("./resources/img/sprite_sheet.png"))
+    if(!img.loadFromFile(AppLocation + "/resources/img/sprite_sheet.png"))
     {
         m_Sprites.clear();
         return false;
@@ -128,5 +128,5 @@ bool TextureLoader::loadTextures()
 
 bool TextureLoader::loadFont()
 {
-    return m_Font.loadFromFile("./resources/font/VeraMono.ttf");
+    return m_Font.loadFromFile(AppLocation + "/resources/font/VeraMono.ttf");
 }

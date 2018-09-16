@@ -18,6 +18,12 @@
 
 class Window
 {
+public:
+    Window() = default;
+    ~Window() = default;
+    
+    void open();
+
 private:
     sf::RenderWindow m_Window;
 
@@ -25,12 +31,6 @@ private:
     void showRecords();
     void showSettingsMenu();
     void showMainMenu();
-
-public:
-    Window() = default;
-    ~Window() = default;
-    
-    void open();
 };
 
 #endif

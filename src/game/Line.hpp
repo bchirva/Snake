@@ -6,8 +6,6 @@
 
 class Line
 {
-protected:
-    std::list<Point> m_Points;
 public:
     Line() = default;
     virtual ~Line() = default;
@@ -20,8 +18,12 @@ public:
     bool isHit(const Point& APoint) const;
     bool isHit(const Line& ALine) const;
 
-    auto begin() -> decltype(m_Points.begin());
-    auto end() -> decltype(m_Points.end());
+    std::list<Point>::iterator begin();
+    std::list<Point>::iterator end();
+//    auto begin() -> decltype(m_Points.begin());
+//    auto end() -> decltype(m_Points.end());
+protected:
+    std::list<Point> m_Points;
 };
 
 #endif

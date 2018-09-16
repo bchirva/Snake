@@ -17,6 +17,16 @@
 
 class Game : public Scene
 {
+public:
+    Game();
+    ~Game() = default;
+
+    bool isGameOver() const;
+    bool isPaused() const;
+
+    void start();
+    uint16_t exec();
+
 private:
     std::shared_ptr<Snake> m_Snake = nullptr;
     std::shared_ptr<Wall> m_Wall = nullptr;
@@ -44,16 +54,6 @@ private:
 
     void processInput(sf::Keyboard::Key AKey) override;
     void draw(sf::RenderWindow& ATargetWindow) const override;
-
-public:
-    Game();
-    ~Game() = default;
-
-    bool isGameOver() const;
-    bool isPaused() const;
-
-    void start();
-    uint16_t exec();
 };
 
 #endif

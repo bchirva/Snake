@@ -2,6 +2,7 @@
 #define BASE_HPP
 
 #include <stdint.h>
+#include <string>
 
 enum class EDirection
 {
@@ -13,4 +14,5 @@ enum class EDirection
 
 constexpr uint8_t FIELD_SIZE = 24;
 
+//std::string AppLocation;
 #endif

@@ -6,6 +6,8 @@
 #include <list>
 #include <array>
 
+extern std::string AppLocation;
+
 class Record : public std::pair<std::string, int>
 {
 public:
@@ -18,15 +20,6 @@ public:
 
 class TopScoreHolder
 {
-private:
-    static std::shared_ptr<TopScoreHolder> g_Instance;
-    static std::mutex g_InstanceMutex;
-    std::array<Record, 3> m_Records {};
-
-    TopScoreHolder() = default;
-    void loadRecords();
-    void saveRecords();
-
 public:
     ~TopScoreHolder() = default;
     static std::shared_ptr<TopScoreHolder> getInstance();
@@ -34,6 +27,16 @@ public:
     const std::array<Record, 3>& getRecords() const;
     bool isNewRecord(int AScore) const;
     void reset();
+
+private:
+    static std::shared_ptr<TopScoreHolder> g_Instance;
+    static std::mutex g_InstanceMutex;
+
+    std::array<Record, 3> m_Records {};
+
+    TopScoreHolder() = default;
+    void loadRecords();
+    void saveRecords();
 };
 
 #endif // TOPSCOREHOLDER_HPP

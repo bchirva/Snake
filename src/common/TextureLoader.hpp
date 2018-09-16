@@ -6,6 +6,8 @@
 #include <memory>
 #include <mutex>
 
+extern std::string AppLocation;
+
 enum class ESprite
 {
     LineVertical,
@@ -26,12 +28,13 @@ class TextureLoader
 {
 public:
     static std::shared_ptr<TextureLoader> getInstance();
+
     const sf::Texture& getTexture(ESprite ARequestedSprite) const;
     const sf::Font& getFont() const;
 
 private:
-    static std::mutex g_InstanceMutex;
     static std::shared_ptr<TextureLoader> g_Instance;
+    static std::mutex g_InstanceMutex;
 
     std::map<ESprite, sf::Texture> m_Sprites {};
     sf::Font m_Font;

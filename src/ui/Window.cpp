@@ -34,14 +34,14 @@ void Window::showRecords()
         menuItemList.push_back({label, nullptr});
     }
     menuItemList.push_back({"\t", nullptr});
-    menuItemList.push_back({"Back", [&](){RecordsMenu.quit();}});
     menuItemList.push_back({"Reset", [&](){
         scoreHolder->reset();
         RecordsMenu.quit();
     }});
+    menuItemList.push_back({"Back", [&](){RecordsMenu.quit();}});
 
     RecordsMenu = Menu(std::move(menuItemList));
-    RecordsMenu.next();
+    RecordsMenu.prev();
     RecordsMenu.show(m_Window);
 }
 
@@ -84,18 +84,18 @@ void Window::showSettingsMenu()
                          {std::string("Quit\t"  + handler->getKeyStr(ControlHandler::Action::Quit)),
                           std::bind(newKey, ControlHandler::Action::Quit)},
                          {"\t", nullptr},
-                         {"Back", [&](){
-                             handler->loadKeyMap();
-                             SettingsMenu.quit();}},
+                         {"Apply", [&](){
+                              handler->saveKeyMap();
+                              SettingsMenu.quit();
+                         }},
                          {"Reset", [&](){
                               handler->configureDefault();
                               handler->saveKeyMap();
                               SettingsMenu.quit();
                          }},
-                         {"Apply", [&](){
-                              handler->saveKeyMap();
-                              SettingsMenu.quit();
-                         }}
+                         {"Back", [&](){
+                             handler->loadKeyMap();
+                             SettingsMenu.quit();}}
                        });
     SettingsMenu.show(m_Window);
 }

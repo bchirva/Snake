@@ -1,4 +1,5 @@
 #include "ControlHandler.hpp"
+#include "Base.hpp"
 #include <fstream>
 
 std::shared_ptr<ControlHandler> ControlHandler::g_Instance = nullptr;
@@ -10,7 +11,7 @@ void ControlHandler::loadKeyMap()
     YAML::Node root;
     try
     {
-        root = YAML::LoadFile("resources/settings.yaml");
+        root = YAML::LoadFile(AppLocation + "/resources/settings.yaml");
     }
     catch (YAML::BadFile&)
     {
@@ -62,7 +63,7 @@ void ControlHandler::saveKeyMap()
 
     YAML::Node root;
     root["Keys"] = keys;
-    std::ofstream out ("resources/settings.yaml");
+    std::ofstream out (AppLocation + "/resources/settings.yaml");
     if(out.is_open())
     {
         out << root;

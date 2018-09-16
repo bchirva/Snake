@@ -5,13 +5,6 @@
 
 class Point
 {
-private:
-    void validate();
-
-protected:
-    int8_t m_X = 0;
-    int8_t m_Y = 0;
-
 public:
     Point() = default;
     virtual ~Point()= default;
@@ -27,6 +20,13 @@ public:
     void setCoord(int8_t x, int8_t y);
     void move(EDirection ADirection, int8_t ADistance);
     bool isHit(const Point& APoint) const;
+
+protected:
+    int8_t m_X = 0;
+    int8_t m_Y = 0;
+
+private:
+    void validate();
 };
 
 #endif

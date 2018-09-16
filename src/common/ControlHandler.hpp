@@ -8,7 +8,7 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <yaml-cpp/yaml.h>
 
-//#include "FileDataAgent.hpp"
+extern std::string AppLocation;
 
 class ControlHandler
 {
@@ -28,18 +28,19 @@ public:
     void setKey(ControlHandler::Action AAction, sf::Keyboard::Key AKey);
     sf::Keyboard::Key getKey(ControlHandler::Action AAction);
 
-    std::string getKeyStr(ControlHandler::Action AAction);
-    std::string getKeyStr(sf::Keyboard::Key AKey);
-
     void configureDefault();
     void loadKeyMap();
     void saveKeyMap();
     bool isBusy(sf::Keyboard::Key AKey);
 
+    std::string getKeyStr(ControlHandler::Action AAction);
+    std::string getKeyStr(sf::Keyboard::Key AKey);
+
 private:
-    std::map<ControlHandler::Action, sf::Keyboard::Key> m_Keys {};
     static std::shared_ptr<ControlHandler> g_Instance;
     static std::mutex g_InstanceMutex;
+
+    std::map<ControlHandler::Action, sf::Keyboard::Key> m_Keys {};
 
     ControlHandler() = default;
     std::string getString(sf::Keyboard::Key AKey);

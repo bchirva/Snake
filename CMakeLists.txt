@@ -45,9 +45,9 @@ endif()
 
 target_include_directories (Snake
     PRIVATE
-       ${CMAKE_CURRENT_SOURCE_DIR}/include/game
-       ${CMAKE_CURRENT_SOURCE_DIR}/include/ui
-       ${CMAKE_CURRENT_SOURCE_DIR}/include/common
+       ${CMAKE_CURRENT_SOURCE_DIR}/src/game
+       ${CMAKE_CURRENT_SOURCE_DIR}/src/ui
+       ${CMAKE_CURRENT_SOURCE_DIR}/src/common
     )
 
 target_link_libraries (Snake

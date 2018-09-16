@@ -1,7 +1,10 @@
 #include "TopScoreHolder.hpp"
+#include "Base.hpp"
 #include <algorithm>
 #include <fstream>
 #include <yaml-cpp/yaml.h>
+
+#include <iostream>
 
 std::shared_ptr<TopScoreHolder> TopScoreHolder::g_Instance = nullptr;
 std::mutex TopScoreHolder::g_InstanceMutex;
@@ -11,7 +14,7 @@ void TopScoreHolder::loadRecords()
     YAML::Node root;
     try
     {
-        root = YAML::LoadFile("resources/records.yaml");
+        root = YAML::LoadFile(AppLocation + "/resources/records.yaml");
     }
     catch(YAML::BadFile&)
     {
@@ -45,7 +48,7 @@ void TopScoreHolder::saveRecords()
         root["Records"][i]["PlayerName"] = m_Records[i].first;
         root["Records"][i]["Score"] = m_Records[i].second;
     }
-    std::ofstream out ("resources/records.yaml");
+    std::ofstream out (AppLocation + "/resources/records.yaml");
     if (out.is_open())
     {
         out << root;

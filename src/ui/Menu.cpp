@@ -58,7 +58,7 @@ void Menu::prev()
     m_CurrentItem = prevItem;
 }
 
-decltype(Menu::m_Items.begin()) Menu::getCurrent() const
+std::list<MenuItem>::iterator Menu::getCurrent() const
 {
     return m_CurrentItem;
 }
