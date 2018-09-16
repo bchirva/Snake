@@ -4,7 +4,7 @@ Written in C++ with [SFML](https://sfml-dev.org).
 ##### Requirements:
 * C++ compiler that support 14 standard;
 * CMake at least 3.5.2 version;
-* SFML (v2.5 is used in this project)
+* Conan package manager
 
 ##### Default Control:
 Command | Key 
