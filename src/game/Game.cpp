@@ -8,7 +8,7 @@ Game::Game()
 {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<int8_t> range(0, FIELD_SIZE - 1);
+    std::uniform_int_distribution<int16_t> range(0, FIELD_SIZE - 1);
 
     m_Apple = std::make_shared<Apple>();
     m_Wall = std::make_shared<Wall>();
@@ -88,7 +88,7 @@ void Game::relocateApple()
 {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<int8_t> range(0, FIELD_SIZE - 1);
+    std::uniform_int_distribution<int16_t> range(0, FIELD_SIZE - 1);
 
     do
     {
@@ -101,7 +101,7 @@ void Game::expandWall()
 {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<int8_t> range(0, FIELD_SIZE - 1);
+    std::uniform_int_distribution<int16_t> range(0, FIELD_SIZE - 1);
 
     Line expandLine;
     do

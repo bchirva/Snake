@@ -1,6 +1,6 @@
 #include "Point.hpp"
 
-Point::Point(int8_t x, int8_t y)
+Point::Point(int16_t x, int16_t y)
     : m_X(x), m_Y(y)
 {
     validate();
@@ -40,19 +40,19 @@ bool Point::isHit(const Point& APoint) const
     return (m_X == APoint.m_X && m_Y == APoint.m_Y);
 }
 
-void Point::setCoord(int8_t x, int8_t y)
+void Point::setCoord(int16_t x, int16_t y)
 {
     m_X = x;
     m_Y = y;
     validate();
 }
 
-int8_t Point::getX() const
+int16_t Point::getX() const
 {
     return m_X;
 }
 
-int8_t Point::getY() const
+int16_t Point::getY() const
 {
     return m_Y;
 }

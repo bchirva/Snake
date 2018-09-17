@@ -12,18 +12,18 @@ public:
     Point(Point&&) = default;
     Point& operator=(const Point&) = default;
     Point& operator=(Point&&) = default;
-    Point(int8_t x, int8_t y);
+    Point(int16_t x, int16_t y);
 
-    int8_t getX() const;
-    int8_t getY() const;
+    int16_t getX() const;
+    int16_t getY() const;
 
-    void setCoord(int8_t x, int8_t y);
+    void setCoord(int16_t x, int16_t y);
     void move(EDirection ADirection, int8_t ADistance);
     bool isHit(const Point& APoint) const;
 
 protected:
-    int8_t m_X = 0;
-    int8_t m_Y = 0;
+    int16_t m_X = 0;
+    int16_t m_Y = 0;
 
 private:
     void validate();
