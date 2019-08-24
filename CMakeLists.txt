@@ -2,9 +2,6 @@ cmake_minimum_required (VERSION 3.5.2 FATAL_ERROR)
 
 project (Snake)
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup(TARGETS)
-
 find_package (Threads REQUIRED)
 
 add_executable (Snake
@@ -27,8 +24,8 @@ add_executable (Snake
 
 set_property (TARGET Snake PROPERTY CXX_STANDARD 14)
 
-if (NOT ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
-    file(COPY resources DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/)
+if (NOT ${CMAKE_CURRENT_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+    file(COPY resources DESTINATION ${CMAKE_BINARY_DIR}/)
 endif()
 
 if (MSVC)
@@ -50,10 +47,26 @@ target_include_directories (Snake
        ${CMAKE_CURRENT_SOURCE_DIR}/src/common
     )
 
+set(SFML_USE_SYSTEM OFF CACHE BOOL "Use installed binary instead of build SFML from source")
+if(${SFML_USE_SYSTEM})
+    find_package(SFML 2.5.0 COMPONENTS system graphics window REQUIRED)
+else()
+    add_subdirectory(3rdparty/sfml/)
+endif()
+
+set(YAML_USE_SYSTEM OFF CACHE BOOL "Use installed binary instead of build yaml-cpp from source")
+if(${YAML_USE_SYSTEM})
+    find_package(yaml-cpp REQUIRED)
+else()
+    add_subdirectory(3rdparty/yamlcpp/) 
+endif()
+
 target_link_libraries (Snake
     PRIVATE
-        CONAN_PKG::sfml
-        CONAN_PKG::yaml-cpp
+        sfml-system
+        sfml-graphics
+        sfml-window
+        yaml-cpp
         Threads::Threads
     )
 

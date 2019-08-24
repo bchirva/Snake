@@ -1,0 +1,6 @@
+[submodule "3rdparty/sfml"]
+	path = 3rdparty/sfml
+	url = https://github.com/SFML/SFML.git
+[submodule "3rdparty/yamlcpp"]
+	path = 3rdparty/yamlcpp
+	url = https://github.com/jbeder/yaml-cpp
